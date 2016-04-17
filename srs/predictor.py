@@ -4,6 +4,7 @@ import sys
 import numpy as np
 from maxEntropyModel import cond_prob, loadWordListDict, train
 from utilities import loadUsefulTrainingData
+import argparse
 
 class StaticPredictor(object):
 	"""
@@ -72,15 +73,32 @@ class StaticPredictor(object):
 		else:
 			return predicted_aspect
 
-def main():
+def parseCommandLineArguments():
+    """
+    Parse the command-line arguments being passed to qm_input_check. This uses the
+    :mod:`argparse` module, which ensures that the command-line arguments are
+    sensible, parses them, and returns them.
+    """
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-vn', '--version_number', type=str, nargs=1, default=['3'],
+        help='set the version number of wordlist_dict')
+
+    return parser.parse_args()
+
+def main(version_number):
+
 	staticPredictor = StaticPredictor()
 
-	wordlist_dict_path = 'predictor_data/wordlist_dict_1.txt'
+	wordlist_dict_path = 'predictor_data/wordlist_dict_{0}.txt'.format(version_number)
 	static_training_data_dir = 'static_training_data/'
-	save_lamda_path = 'predictor_data/lambda_opt.txt'
+	save_lamda_path = 'predictor_data/lambda_opt_regu{0}.txt'.format(version_number)
 
 	staticPredictor.train(wordlist_dict_path, static_training_data_dir, save_lamda_path)
 
 if __name__ == '__main__':
-	main()
+	args = parseCommandLineArguments()
+	version_number = args.version_number[0]
+
+	main(version_number)
 		
