@@ -16,15 +16,15 @@
 <ul class="topnav" id="myTopnav">
   <li><a href="/"><img src="static/images/logo.png" height="25" width="73" /></a>
   <li><a href="/" >Home</a></li>
-  <li><a href="#news">Team</a></li>
-  <li><a href="#contact">Contact</a></li>
   <li><a href="#about">About</a></li>
   <li class="icon">
     <a href="javascript:void(0);" onclick="myFunction()">&#9776;</a>
   </li>
 </ul>
 
-<h2><img src="static/images/logo_circle.png" height="100" width="100"></h2>
+<a target="_blank" href="https://github.com/MachineLearningStudyGroup/Smart_Review_Summarization"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+<h2><img src="static/images/logo_circle.png" height="120" width="120"></h2>
 <header><h1 style="color:#202020;">Smart Review Summarization</h1></header>
 
 <div id="main_section" style="width:600px; margin:0 auto;">
@@ -36,7 +36,7 @@
 	      >
 
 	    <div class="form-group" id="input1">
-	        <label for="product_id">&nbsp Product Asin <a target="_blank" href="https://www.amazon.com/gp/seller/asin-upc-isbn-info.html"> <sup>(?)</sup> </a></label><br>
+	        <label for="product_id">&nbsp Product Asin <a target="_blank" href="https://www.amazon.com/gp/seller/asin-upc-isbn-info.html"> <sup>(?)</sup></a> <label id="input1_alert" style="color:#FF0000; font-size: 18" ></label> </label><br>
 		    <center>
 		        <input name="product_id"
 		               id="product_id"
@@ -48,7 +48,7 @@
    			</center>
 	    </div> 
 	    <div class="form-group" id="input2" style="display:none;">
-	        <label for="product_id">&nbsp Product 2 Asin: </label><br>
+	        <label for="product_id">&nbsp Product 2 Asin: </label> <label id="input2_alert" style="color:#FF0000; font-size: 18" ></label> <br>
 		    <center>
 		        <input name="product_id2"
 		               id="product_id2"
@@ -62,8 +62,8 @@
 
 	    <center>
 	    	<input type="submit" name="Summarize" id="Summarize"  value="Summarize" class="btn btn-default"/>
-	    	<div id="input_alert" style="color:#FF0000; display:none" >Invalid Asin</div> 
-
+<!-- 	    	<div id="input_alert" style="color:#FF0000; display:none" >Invalid Asin</div>
+ -->
 		</center>
 
 	</form>

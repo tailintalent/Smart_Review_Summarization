@@ -20,7 +20,7 @@ def prepareDataForRectPlot(feature_scorelist_dict, sort=True, spanTop=75, spanBo
 	features_to_plot = []
 	for feature in features:
 		scorelist = feature_scorelist_dict[feature]
-		if len(scorelist) > 1:
+		if len(scorelist) > 2:
 			scorearray = np.array(scorelist)
 			mean = np.mean(scorearray)
 			span = np.percentile(scorearray, spanTop) - np.percentile(scorearray, spanBottom)

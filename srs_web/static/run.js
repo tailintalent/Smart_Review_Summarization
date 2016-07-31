@@ -1,5 +1,4 @@
 function renderResult(d,tStatus, jqxhr){
-    $("#loader-wrapper").hide();
     product_id = d;
     var resultUrl = "/srs_result_box_bokeh/" + product_id;
     window.location = resultUrl;
@@ -38,7 +37,7 @@ function fillHistData(cb_data, histPlot_data, features, hist_data) {
         histPlot_data['right']= histRight;
         histPlot_data['feature'] = feature;
 
-        console.log(histPlot_data['feature']);
+        // console.log(histPlot_data['feature']);
         $("#histPlotTitle p").text(histPlot_data['feature']);           
         }
     
@@ -86,26 +85,32 @@ function fillSampleReviews(cb_data, sampleSentences_dict, feature) {
 
     if (typeof barIdx != 'undefined'){
         var example_sen = sampleSentences_dict[feature][barIdx];
-        console.log(example_sen[0]);
+        // console.log(example_sen[0]);
         $("#sample_sen1").text(example_sen[0]);
     }
 }
 
 $("#input_form").submit(function(e){    
-    var formData = new FormData($(this)[0]);
     var user_input1 = document.forms['input_form'].elements['product_id'].value;
-    if (user_input1 == ""){
+    var user_input2 = document.forms['input_form'].elements['product_id2'].value;
+    if (user_input1 == "" && user_input2 == ""){
         $.ajax({
             type: "POST",
             url: "/",
             complete: function(){
-                $("#input_alert").show();
+                $("#input1_alert").text("Cannot leave empty");
             }
         })
         e.preventDefault();
 
     }else{
-    // create job
+        if (user_input1 == "" && user_input2 != ""){
+            document.forms['input_form'].elements['product_id'].value = user_input2;
+            document.forms['input_form'].elements['product_id2'].value = "";
+        }
+        var formData = new FormData($(this)[0]);
+        $("#input1_alert").text("");
+        // create job
         $.ajax({
             type: "POST",
             url: "/scrape_reviews",
@@ -115,11 +120,24 @@ $("#input_form").submit(function(e){
                 // alert("Your summarization for " + data + " is ready!");
                 // run job
                 id = data;
-                renderResult(id);
+                if (id=="1"){
+                    $("#input1_alert").text("Unable to retrieve review from Amazon"); 
+                    $("#input2_alert").text("");
+                }else if (id=="2") {
+                    $("#input1_alert").text("");
+                    $("#input2_alert").text("Unable to retrieve review from Amazon"); 
+                }else if (id=="12"){
+                    $("#input1_alert").text("Unable to retrieve review from Amazon"); 
+                    $("#input2_alert").text("Unable to retrieve review from Amazon"); 
+                }else{
+                    renderResult(id);
+                    $("#input1_alert").text("");
+                    $("#input1_alert").text("");
+                }
+                $("#loader-wrapper").hide();
             },
             beforeSend: function() {
                 // $("#loader1").show();
-                $("#input_alert").hide();
                 $("#loader-wrapper").show();
             },
             cache: false,

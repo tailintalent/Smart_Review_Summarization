@@ -4,6 +4,7 @@ from srs.srs_local import fill_in_db
 from srs.utilities import loadScraperDataFromDB
 from srs.scraper import createAmazonScraper
 from srs.scraper import scrape_reviews_hard
+from srs.database import select_for_product_id
 import json
 import numpy as np
 
@@ -17,22 +18,31 @@ def home():
 
 @app.route('/scrape_reviews', methods=['GET', 'POST'])
 def scrape_reviews():
-	from time import sleep
-	sleep(3) 
+	# from time import sleep
+	# sleep(3) 
 
 	if request.method == 'POST':
 		product_id = request.form["product_id"]
 		product_id2 = request.form["product_id2"]
 		if not product_id2:		
 			print 'product_id is ' + product_id			
-			fill_in_db(product_id)
-			return str(product_id)
+			db_status = fill_in_db(product_id)
+			if db_status == True:
+				return str(product_id)
+			else: 
+				return "1"
 		else:
 			print 'product_id are ' + product_id	+ ' and '+ product_id2
-			fill_in_db(product_id)
-			fill_in_db(product_id2)
-			return str(product_id) + "&" + str(product_id2)
-
+			db_status = fill_in_db(product_id,scrape_time_limit=20)
+			db_status2 = fill_in_db(product_id2,scrape_time_limit=20)
+			if db_status==True and db_status2==True:
+				return str(product_id) + "&" + str(product_id2)
+			elif db_status==False and db_status2==True:
+				return "1"
+			elif db_status==True and db_status2==False:
+				return "2"
+			else: 
+				return "12"
 	else:
 		return render_template('home.html')
 
@@ -65,9 +75,16 @@ def showBokehBoxResultWithProductId(product_id):
 	# do plotting
 	plots = sentimentBoxPlot(contents, ft_score_dict, ft_senIdx_dict)
 
+	#query product name
+	res = select_for_product_id(product_id)
+	prod_name =  res[0]["product_name"]
+	prod_name=prod_name[:70]
+	ind_ = prod_name.rfind(' ')
+	prod_name=prod_name[:ind_]+" ..."
+
 	# create the HTML elements to pass to template
 	figJS,figDivs = components(plots)
-	return render_template('srs_result_box_bokeh.html', prod1Title='Canon', dsp='None', figJS=figJS,figDiv=figDivs[0],figDiv2=figDivs[1])
+	return render_template('srs_result_box_bokeh.html', prod1Title=prod_name, dsp='None', figJS=figJS,figDiv=figDivs[0],figDiv2=figDivs[1])
 
 @app.route('/srs_result_box_bokeh/<product_id>&<product_id2>')
 def showBokehBoxResultWithTwoProductIds(product_id, product_id2):
@@ -78,10 +95,23 @@ def showBokehBoxResultWithTwoProductIds(product_id, product_id2):
 	# do plotting
 	plots = sentimentBoxPlot_Compare(contents1, ft_score_dict1, ft_senIdx_dict1, 
 		contents2, ft_score_dict2, ft_senIdx_dict2)
+	
+	#query product name
+	res = select_for_product_id(product_id)
+	prod_name =  res[0]["product_name"]
+	prod_name=prod_name[:70]
+	ind_ = prod_name.rfind(' ')
+	prod_name=prod_name[:ind_]+" ..."
+
+	res = select_for_product_id(product_id2)
+	prod2_name =  res[0]["product_name"]
+	prod2_name=prod2_name[:70]
+	ind_ = prod2_name.rfind(' ')
+	prod2_name=prod2_name[:ind_]+" ..."
 
 	# create the HTML elements to pass to template
 	figJS,figDivs = components(plots)
-	return render_template('srs_result_box_bokeh.html', prod1Title='Canon',dsp='block', prod2Title='Nikon',figJS=figJS,figDiv=figDivs[0],figDiv2=figDivs[1])
+	return render_template('srs_result_box_bokeh.html', prod1Title=prod_name,dsp='block', prod2Title=prod2_name,figJS=figJS,figDiv=figDivs[0],figDiv2=figDivs[1])
 
 if __name__ == '__main__':
 	app.debug = True
