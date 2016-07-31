@@ -92,7 +92,7 @@ def prepareDataForHistPlotAndSampleSentences(
 
 def getRectPlot(features, mids, spans, w=0.3, fill_color="#4286F5", hover_color="#4286F5",
 	plot_width=650, plot_height=450, major_label_orientation=pi/4, 
-	grid_line_alpha=0.3, axis_label_text_font_size='12pt'):
+	grid_line_alpha=0.0, axis_label_text_font_size='12pt'):
 	
 	print features
 	feature_num = len(features)
@@ -100,7 +100,7 @@ def getRectPlot(features, mids, spans, w=0.3, fill_color="#4286F5", hover_color=
 	color_list = [fill_color]*feature_num
 	# plot rectPlot
 	rectPlot = figure(tools="", plot_width=plot_width, plot_height=plot_height, 
-		x_range=sorted(list(set(features))),title="Review Sentiment",title_text_font_size='16pt')
+		x_range=sorted(list(set(features))),title_text_font_size='16pt')
 	rectPlot.yaxis.axis_label_text_font_size = axis_label_text_font_size
 	rectPlot.xaxis.axis_label_text_font_size = axis_label_text_font_size
 	rectPlot.xaxis.major_label_orientation = major_label_orientation
@@ -119,11 +119,11 @@ def getRectPlot(features, mids, spans, w=0.3, fill_color="#4286F5", hover_color=
 def getRectPlot_compare(features1, mids1, spans1, features2, mids2, spans2, w=0.3,
  	color1="#4286F5",color2="#DC4439", hover_color1="#4286F5",hover_color2="#DC4439",
 	plot_width=650, plot_height=450, major_label_orientation=pi/4, 
-	grid_line_alpha=0.3, axis_label_text_font_size='12pt'):
+	grid_line_alpha=0.0, axis_label_text_font_size='12pt'):
 	
 	# plot rectPlot
 	rectPlot = figure(tools="", plot_width=plot_width, plot_height=plot_height, 
-		x_range=sorted(list(set(features1+features2))),title="Review Sentiment",title_text_font_size='16pt')
+		x_range=sorted(list(set(features1+features2))),title_text_font_size='16pt')
 	rectPlot.yaxis.axis_label_text_font_size = axis_label_text_font_size
 	rectPlot.xaxis.axis_label_text_font_size = axis_label_text_font_size
 	rectPlot.xaxis.major_label_orientation = major_label_orientation
@@ -145,11 +145,12 @@ def getRectPlot_compare(features1, mids1, spans1, features2, mids2, spans2, w=0.
 	return rectPlot, rectPlot_rect1, rectPlot_rect2
 
 def getHistPlot(histPlot_cds, color="#4286F5",
-	grid_line_alpha=0.5, axis_label_text_font_size='12pt'):
+	grid_line_alpha=0.0, axis_label_text_font_size='12pt'):
 
 	histPlot = figure(tools="", plot_width=400, plot_height=250,y_axis_label='# of sentences',x_axis_label="Sentiment Score")
 	histPlot.xaxis.axis_label_text_font_size = axis_label_text_font_size
 	histPlot.yaxis.axis_label_text_font_size = axis_label_text_font_size
+	histPlot.grid.grid_line_alpha = grid_line_alpha
 	histPlot.logo = None
 	histPlot.toolbar_location = None
 
@@ -159,13 +160,14 @@ def getHistPlot(histPlot_cds, color="#4286F5",
 	return histPlot, histPlot_quad
 
 def getHistPlot_compare(histPlot_cds1, histPlot_cds2, color1="#4286F5",color2="#DC4439",
-	grid_line_alpha=0.3, axis_label_text_font_size='12pt'):
+	grid_line_alpha=0.0, axis_label_text_font_size='12pt'):
 
 	histPlot = figure(tools="", plot_width=400, plot_height=250,
 		y_axis_label='# of sentences',x_axis_label="Sentiment Score")
 	
 	histPlot.xaxis.axis_label_text_font_size = axis_label_text_font_size
 	histPlot.yaxis.axis_label_text_font_size = axis_label_text_font_size
+	histPlot.grid.grid_line_alpha = grid_line_alpha
 	histPlot.logo = None
 	histPlot.toolbar_location = None
 

@@ -53,7 +53,7 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 		num_review_db = len(query_res[0]["review_ids"])
 
 
-		if num_review_db < review_ratio_threshold * prod_num_reviews: 
+		if num_review_db < review_ratio_threshold * prod_num_reviews and num_review_db < 100: 
 			print "But not enough reviews in db, scrapping for more..."
 			# scrape contents
 			amazonScraper = createAmazonScraper()
@@ -83,7 +83,7 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 
 					update_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
 
-				return False
+				return True
 
 		else:
 			print "enough reviews in db, getting scores..."
@@ -99,6 +99,8 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 				# update old entry
 				update_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
 
+				return True
+			else:
 				return True
 	
 	
