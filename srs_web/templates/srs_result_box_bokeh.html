@@ -24,10 +24,11 @@
 	  </li>
 	</ul>
 
-		<header id="pageHeader"><h1>Smart Review Summarization</h1></header>
+		<!-- <header id="pageHeader"><h1>Smart Review Summarization</h1></header> -->
 <!-- 		<header id="pageHeader"><h2></h2></header>
  -->
-		<div id="legendWrap" class="legend">
+ 		<div id="bodyWrap">
+ 		<div id="legendWrap">
 			<div id="box1" class="box" style="background-color:#4286F5;" >
 				<p id="prod1Legend" class="legend_text" align="left">
 				{{prod1Title}}
@@ -39,10 +40,10 @@
 				{{prod2Title}}
 				</p>
 			</div>
+
+			<div id="AspectsPlot">{{ figDiv|safe }}</div>
 		</div>
 
-		<div id="AspectsPlot">{{ figDiv|safe }}</div>
-		
 		<div id="sidebar">
 			<div id="histPlotTitle">
 				<p>battery</p>
@@ -53,5 +54,13 @@
 			<p id="sample_sen1"></p>
 			</div>
 		</div>
+
+ 			
+ 		</div>
+		
+
+		
+		
+		
 	</body>
 </html>
