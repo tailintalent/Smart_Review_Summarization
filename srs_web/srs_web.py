@@ -18,12 +18,28 @@ def home():
 
 @app.route('/scrape_reviews', methods=['GET', 'POST'])
 def scrape_reviews():
-	# from time import sleep
-	# sleep(3) 
-
 	if request.method == 'POST':
-		product_id = request.form["product_id"]
-		product_id2 = request.form["product_id2"]
+		user_input1 = request.form["product_id"]
+		user_input2 = request.form["product_id2"]
+
+		#filter out product ID from Amazon http link as input 
+		key_word = ["product","dp"]
+		match = next((s for s in key_word if s in user_input1), False)
+		if match and "http" in user_input1:
+		    idx =  user_input1.find(match) + len(match) + 1
+		    idx2 = user_input1[idx:].find('/')
+		    product_id =  user_input1[idx:idx+idx2]
+		else: 
+			product_id = user_input1
+
+		match = next((s for s in key_word if s in user_input2), False)
+		if match and "http" in user_input2:
+		    idx =  user_input2.find(match) + len(match) + 1
+		    idx2 = user_input2[idx:].find('/')
+		    product_id2 =  user_input2[idx:idx+idx2]
+		else: 
+			product_id2 = user_input2
+
 		if not product_id2:		
 			print 'product_id is ' + product_id			
 			db_status = fill_in_db(product_id)
