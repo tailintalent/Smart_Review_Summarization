@@ -4,7 +4,7 @@ from srs import settings
 from utilities import loadScraperDataFromDB, Sentence
 from swnModel import get_sentiment_score_for_sentences, get_ftScore_ftSenIdx_dicts
 from sentiment_plot import box_plot
-from database import upsert_contents_for_product_id, update_score_for_product_id, update_contents_for_product_id, select_for_product_id
+from database import upsert_contents_for_product_id, update_score_for_product_id, update_num_reviews_for_product_id, update_contents_for_product_id, select_for_product_id
 import os
 
 def get_ft_dicts_from_contents(contents, predictor, start_idx = 0):
@@ -54,6 +54,7 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 			prod_num_reviews = query_res[0]['num_reviews']
 		num_review_db = len(query_res[0]["review_ids"])
 		prod_num_reviews = max(prod_num_reviews, num_review_db)
+		update_num_reviews_for_product_id(product_id, prod_num_reviews)
 
 
 		if num_review_db < review_ratio_threshold * prod_num_reviews and num_review_db < 100: 
@@ -75,7 +76,7 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 				
 				# append new entry to existing entry
 				update_contents_for_product_id(product_id, prod_contents_new, prod_review_ids, \
-					prod_ratings, review_ending_sentence, prod_num_reviews, prod_category, \
+					prod_ratings, review_ending_sentence, prod_category, \
 					prod_ft_score_dict, prod_ft_senIdx_dict)
 				return True
 

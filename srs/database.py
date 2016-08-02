@@ -73,6 +73,17 @@ def update_score_for_product_id(product_id, ft_score, ft_senIdx):
 
 	client.close()
 
+def update_num_reviews_for_product_id(product_id, num_reviews):
+
+	client, db = connect_to_db()
+	product_collection = db.product_collection
+
+	query = {"product_id": product_id}
+	update_field = {"num_reviews": num_reviews}
+	product_collection.update(query, {"$set": update_field}, True)
+
+	client.close()
+
 def upsert_contents_for_product_id(product_id, product_name, contents, review_ids, ratings, review_ending_sentence, num_reviews, category, ft_score = None, ft_senIdx = None):
 	if ft_score is None:
 		ft_score = {}
@@ -98,7 +109,7 @@ def upsert_contents_for_product_id(product_id, product_name, contents, review_id
 
 	client.close()
 
-def update_contents_for_product_id(product_id, contents_new, review_ids_new, ratings_new, review_ending_sentence_new, num_reviews_new, category_new, ft_score_new, ft_senIdx_new): 
+def update_contents_for_product_id(product_id, contents_new, review_ids_new, ratings_new, review_ending_sentence_new, category_new, ft_score_new, ft_senIdx_new): 
 	'''
 	Query the content from db, and appends/update 
 	'''
@@ -107,10 +118,7 @@ def update_contents_for_product_id(product_id, contents_new, review_ids_new, rat
 	review_ids = query_res[0]["review_ids"] + review_ids_new
 	ratings = query_res[0]["ratings"] + ratings_new
 
-	num_reviews = query_res[0]["num_reviews"]
 	category = query_res[0]["category"]
-	if num_reviews_new > num_reviews:
-		num_reviews = num_reviews_new
 	if category_new and not category:
 		category = category_new
 
@@ -138,7 +146,6 @@ def update_contents_for_product_id(product_id, contents_new, review_ids_new, rat
 		"review_ids": review_ids,
 		"ratings": ratings,
 		"review_ending_sentence": review_ending_sentence,
-		"num_reviews": num_reviews,
 		"category": category,
 		"ft_score": ft_score, 
 		"ft_senIdx": ft_senIdx
