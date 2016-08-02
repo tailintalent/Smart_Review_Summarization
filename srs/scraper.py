@@ -300,7 +300,12 @@ def main(amazonScraper, product_id, checker = False, scrape_time_limit = 30):
         # if product in db, checker is turned on to check for conflict review
         checker = True
     try: 
-        return amazonScraper.scrape_reviews(product_id, checker, scrape_time_limit)
+        product_name, contents, review_ids, ratings, review_ending_sentence = amazonScraper.scrape_reviews(product_id, checker, scrape_time_limit)
+        if len(contents) > 0:
+            return product_name, contents, review_ids, ratings, review_ending_sentence
+        else:
+            print "Amazon API scraper does not return contents, try backup scraper..."
+            return scrape_reviews_hard(product_id, checker)
     except:
         # backup scraper 
         print 'Amazon API failed. Scrape the hard way!'
