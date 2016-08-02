@@ -27,6 +27,8 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 		amazonScraper = createAmazonScraper()
 		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence = scraper_main(amazonScraper, product_id, True, scrape_time_limit)
 		prod_num_reviews, prod_category = scrape_num_review_and_category(product_id)
+		if prod_num_reviews == -1:
+			prod_num_reviews = len(prod_review_ids)
 
 		# classify, sentiment score
 		predictor = loadTrainedPredictor(predictor_name)
@@ -48,9 +50,10 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 		# scrape for total number of review and category
 		prod_num_reviews, prod_category = scrape_num_review_and_category(product_id)
 		query_res = select_for_product_id(product_id)
-		if not prod_num_reviews:
+		if prod_num_reviews == -1:
 			prod_num_reviews = query_res[0]['num_reviews']
 		num_review_db = len(query_res[0]["review_ids"])
+		prod_num_reviews = max(prod_num_reviews, num_review_db)
 
 
 		if num_review_db < review_ratio_threshold * prod_num_reviews and num_review_db < 100: 

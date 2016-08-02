@@ -271,7 +271,7 @@ def scrape_num_review_and_category(productID, max_scrape_loop = 2, current_loop=
     return total number of reviews from the page
     '''
     if current_loop > max_scrape_loop:
-        return [], []
+        return -1, []
     else:
         try:
             current_loop += 1
