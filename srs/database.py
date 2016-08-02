@@ -62,28 +62,15 @@ def select_for_product_id(product_id):
 
 	return query_res
 
-def insert_for_product_id(product_id, contents, review_ids, ratings, num_reviews, ft_score=None, ft_senIdx=None):
-	if ft_score is None:
-		ft_score = {}
-	if ft_senIdx is None:
-		ft_senIdx = {}
-
-	# create a document to insert
-	product_document = {
-	"product_id":product_id,
-	"contents": contents,
-	"review_ids": review_ids,
-	"ratings": ratings,
-	"num_reviews": num_reviews,
-	"ft_score": ft_score,
-	"ft_senIdx": ft_senIdx
-	}
+def update_score_for_product_id(product_id, ft_score, ft_senIdx):
 
 	client, db = connect_to_db()
 	product_collection = db.product_collection
 
-	# insert
-	product_collection.save(product_document)
+	query = {"product_id": product_id}
+	update_field = {"ft_score": ft_score, "ft_senIdx":ft_senIdx}
+	product_collection.update(query, {"$set": update_field}, True)
+
 	client.close()
 
 def upsert_contents_for_product_id(product_id, product_name, contents, review_ids, ratings, review_ending_sentence, num_reviews, category, ft_score = None, ft_senIdx = None):
@@ -107,17 +94,6 @@ def upsert_contents_for_product_id(product_id, product_name, contents, review_id
 	"ft_score": ft_score, 
 	"ft_senIdx": ft_senIdx
 	}
-	product_collection.update(query, {"$set": update_field}, True)
-
-	client.close()
-
-def update_for_product_id(product_id, ft_score, ft_senIdx):
-
-	client, db = connect_to_db()
-	product_collection = db.product_collection
-
-	query = {"product_id": product_id}
-	update_field = {"ft_score": ft_score, "ft_senIdx":ft_senIdx}
 	product_collection.update(query, {"$set": update_field}, True)
 
 	client.close()
