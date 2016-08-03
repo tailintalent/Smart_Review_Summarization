@@ -4,17 +4,17 @@ from srs import settings
 from utilities import loadScraperDataFromDB, Sentence
 from swnModel import get_sentiment_score_for_sentences, get_ftScore_ftSenIdx_dicts
 from sentiment_plot import box_plot
-from database import upsert_contents_for_product_id, update_for_product_id, update_contents_for_product_id, select_for_product_id
+from database import upsert_contents_for_product_id, update_score_for_product_id, update_num_reviews_for_product_id, update_contents_for_product_id, select_for_product_id
 import os
 
-def get_ft_dicts_from_contents(contents, predictor):
+def get_ft_dicts_from_contents(contents, predictor, start_idx = 0):
 	sentences = []
 	for cont in contents:
 		sentences.append(Sentence(content=cont))
 	
 	predictor.predict_for_sentences(sentences)	#if Maxentropy, the cp_threshold=0.5, if Word2Vec, the cp_threshold should be 0.85 for criteria_for_choosing_class = "max", similarity_measure = "max"
 	get_sentiment_score_for_sentences(sentences)
-	return get_ftScore_ftSenIdx_dicts(sentences)
+	return get_ftScore_ftSenIdx_dicts(sentences, start_idx)
 	
 
 def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold = 0.8, scrape_time_limit = 30):	
@@ -27,6 +27,8 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 		amazonScraper = createAmazonScraper()
 		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence = scraper_main(amazonScraper, product_id, True, scrape_time_limit)
 		prod_num_reviews, prod_category = scrape_num_review_and_category(product_id)
+		if prod_num_reviews == -1:
+			prod_num_reviews = len(prod_review_ids)
 
 		# classify, sentiment score
 		predictor = loadTrainedPredictor(predictor_name)
@@ -48,9 +50,11 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 		# scrape for total number of review and category
 		prod_num_reviews, prod_category = scrape_num_review_and_category(product_id)
 		query_res = select_for_product_id(product_id)
-		if not prod_num_reviews:
+		if prod_num_reviews == -1:
 			prod_num_reviews = query_res[0]['num_reviews']
 		num_review_db = len(query_res[0]["review_ids"])
+		prod_num_reviews = max(prod_num_reviews, num_review_db)
+		update_num_reviews_for_product_id(product_id, prod_num_reviews)
 
 
 		if num_review_db < review_ratio_threshold * prod_num_reviews and num_review_db < 100: 
@@ -63,15 +67,16 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 			predictor = loadTrainedPredictor(predictor_name)
 			if len(prod_contents_new) > 0:
 				print "Filling scraped new reviews into db..."
-				if len(prod_ft_score_dict) == 0 or len(prod_ft_senIdx_dict) == 0:
+				if len(prod_ft_score_dict) == 0 or len(prod_ft_senIdx_dict) == 0:				
 					prod_contents = prod_contents + prod_contents_new
-					prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor)
-				else:
-					prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents_new, predictor)
+					prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor, start_idx = 0)
+				else: # already has ft_scores calculated for previous contents:
+					start_idx = len(prod_contents)
+					prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents_new, predictor, start_idx = start_idx)
 				
 				# append new entry to existing entry
 				update_contents_for_product_id(product_id, prod_contents_new, prod_review_ids, \
-					prod_ratings, review_ending_sentence, prod_num_reviews, prod_category, \
+					prod_ratings, review_ending_sentence, prod_category, \
 					prod_ft_score_dict, prod_ft_senIdx_dict)
 				return True
 
@@ -81,7 +86,7 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 					prod_contents = prod_contents + prod_contents_new
 					prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor)
 
-					update_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
+					update_score_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
 
 				return True
 
