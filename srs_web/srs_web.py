@@ -136,6 +136,10 @@ def showBokehBoxResultWithTwoProductIds(product_id, product_id2):
 	figJS,figDivs = components(plots)
 	return render_template('srs_result_box_bokeh.html', prod1Title=prod_name,dsp='block', prod2Title=prod2_name,figJS=figJS,figDiv=figDivs[0],figDiv2=figDivs[1])
 
+@app.route('/about')
+def aboutPage():
+	return render_template('about.html')
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0', port=80,threaded=True)

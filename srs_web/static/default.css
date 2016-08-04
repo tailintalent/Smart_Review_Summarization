@@ -73,6 +73,12 @@ header {
     text-align: center;
 }
 
+h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 28pt;
+}
+
 h2{
     padding-top:30px;
     padding-bottom:0px;
@@ -80,7 +86,14 @@ h2{
     margin: auto;
 }
 
-
+h3{
+    padding-top:10px;
+    padding-bottom:10px;
+    text-align: center;
+    margin: auto;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 22pt;
+}
 #main_section {
     padding:20px;
     padding-top:35px;
@@ -94,11 +107,6 @@ footer {
     padding: 5px;
 }
 
-h1 {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 300;
-    font-size: 28pt;
-}
 
 label{
     font-family: 'Roboto Condensed', sans-serif;
@@ -128,31 +136,6 @@ input {
     height:40px;
     margin-right:20px;
     font-size: 14pt;
-}
-
-#myMenu
-{
-    width: 100%;
-    height: 60px;
-    z-index: 999; 
-    background-color: #D3D3D3;
-
-}
-.myWrapper
-{
-    max-width: 660px;
-    margin: 0 auto;
-}
-
-.logo
-{
-    display: inline-block;
-    width: 132px;
-    height: 63px;
-        margin-top: 5px;
-        background-size: auto 143px;
-    background-image: url(static/logo.png);
-    background-repeat: no-repeat;
 }
 
 
@@ -246,7 +229,6 @@ ul.share-buttons li{
   display: inline;
 }
 
-
 /*Navigation Bar */ 
 /* Remove margins and padding from the list, and add a black background color */
 ul.topnav {
@@ -279,4 +261,41 @@ ul.topnav li a:hover {background-color: #555;}
 
 /* Hide the list item that contains the link that should open and close the topnav on small screens */
 ul.topnav li.icon {display: none;}
+/*Home Page CSS END*/
 
+
+/*ABOUT Page CSS Begin*/
+#wrap_picture{
+    width: 70%;
+    height: 240px;
+    margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    text-align:center;
+}
+
+
+#wrap_people {
+    margin: 20px;
+    width: 100%;
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#first_col {
+    width: 30%;
+    float:left; 
+    margin: 10px;
+}
+#second_col {
+    width: 30%;
+    float:left; 
+    overflow: hidden; 
+    margin: 10px;
+}
+#third_col{
+    width: 30%;
+    overflow: hidden; 
+    margin: 10px;
+}
+
+/*ABOUT Page CSS End*/
