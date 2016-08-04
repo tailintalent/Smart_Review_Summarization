@@ -18,12 +18,28 @@ def home():
 
 @app.route('/scrape_reviews', methods=['GET', 'POST'])
 def scrape_reviews():
-	# from time import sleep
-	# sleep(3) 
-
 	if request.method == 'POST':
-		product_id = request.form["product_id"]
-		product_id2 = request.form["product_id2"]
+		user_input1 = request.form["product_id"]
+		user_input2 = request.form["product_id2"]
+
+		#filter out product ID from Amazon http link as input 
+		key_word = ["/product/","/dp/","/product-reviews/"]
+		match = next((s for s in key_word if s in user_input1), False)
+		if match and "http" in user_input1:
+		    idx =  user_input1.find(match) + len(match) 
+		    idx2 = user_input1[idx:].find('/')
+		    product_id =  user_input1[idx:idx+idx2]
+		else: 
+			product_id = user_input1
+
+		match = next((s for s in key_word if s in user_input2), False)
+		if match and "http" in user_input2:
+		    idx =  user_input2.find(match) + len(match) 
+		    idx2 = user_input2[idx:].find('/')
+		    product_id2 =  user_input2[idx:idx+idx2]
+		else: 
+			product_id2 = user_input2
+
 		if not product_id2:		
 			print 'product_id is ' + product_id			
 			db_status = fill_in_db(product_id)
@@ -97,21 +113,32 @@ def showBokehBoxResultWithTwoProductIds(product_id, product_id2):
 		contents2, ft_score_dict2, ft_senIdx_dict2)
 	
 	#query product name
+	maxChar = 70
 	res = select_for_product_id(product_id)
 	prod_name =  res[0]["product_name"]
-	prod_name=prod_name[:70]
+	nChar = len(prod_name)
+	prod_name=prod_name[:maxChar]
 	ind_ = prod_name.rfind(' ')
-	prod_name=prod_name[:ind_]+" ..."
+	prod_name=prod_name[:ind_]
+	if nChar > maxChar:
+		prod_name = prod_name +" ..."
 
 	res = select_for_product_id(product_id2)
 	prod2_name =  res[0]["product_name"]
-	prod2_name=prod2_name[:70]
+	nChar = len(prod2_name)
+	prod2_name=prod2_name[:maxChar]
 	ind_ = prod2_name.rfind(' ')
-	prod2_name=prod2_name[:ind_]+" ..."
+	prod2_name=prod2_name[:ind_]
+	if nChar > maxChar:
+		prod2_name = prod2_name +" ..."
 
 	# create the HTML elements to pass to template
 	figJS,figDivs = components(plots)
 	return render_template('srs_result_box_bokeh.html', prod1Title=prod_name,dsp='block', prod2Title=prod2_name,figJS=figJS,figDiv=figDivs[0],figDiv2=figDivs[1])
+
+@app.route('/about')
+def aboutPage():
+	return render_template('about.html')
 
 if __name__ == '__main__':
 	app.debug = True

@@ -6,12 +6,6 @@ h1 {
     font-size: 25px;
 }
 
-h2{
-  background-image: url("../static/images/gradient_backgrd.jpg");
-  padding-top: 10px;
-  width: 100%;
-}
-
 p {
   padding-bottom: 3px;
   margin: 1px;
@@ -19,7 +13,7 @@ p {
 }
 
 #bodyWrap {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 #legendWrap {
@@ -84,9 +78,10 @@ p {
 /* Remove margins and padding from the list, and add a black background color */
 ul.topnav {
     list-style-type: none;
-    margin: 0;
+    margin: -8px;
     padding: 0;
     overflow: hidden;
+    /*background-color: #202020;*/
     background-image: url("../static/images/gradient_backgrd.jpg");
 }
 
@@ -98,11 +93,12 @@ ul.topnav li a {
     display: inline-block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 18px;
+    padding: 14px 16px;
     text-decoration: none;
     transition: 0.3s;
     font-size: 17px;
     font-family: 'Roboto Condensed', sans-serif;
+
 }
 
 /* Change background color of links on hover */
