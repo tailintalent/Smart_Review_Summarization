@@ -261,6 +261,62 @@ ul.topnav li a:hover {background-color: #555;}
 
 /* Hide the list item that contains the link that should open and close the topnav on small screens */
 ul.topnav li.icon {display: none;}
+
+
+/* Effect 5: 3d bar bottom */
+.la-anim-5 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 12px;
+    background: #ed4e6e;
+    -webkit-transform: translate3d(-103%, 0, 0);
+    transform: translate3d(-103%, 0, 0);
+    pointer-events: none;
+}
+
+.la-anim-5::before,
+.la-anim-5::after {
+    position: absolute;
+    content: '';
+}
+
+.la-anim-5::before {
+    bottom: 100%;
+    left: -10%;
+    width: 110%;
+    height: 6px;
+    background: #fb738f;
+    -webkit-transform: skew(-45deg);
+    transform: skew(-45deg);
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+}
+
+.la-anim-5::after {
+    top: 0;
+    left: 100%;
+    width: 6px;
+    height: 100%;
+    background: #d23d5b;
+    -webkit-transform: skew(0,-45deg);
+    transform: skew(0,-45deg);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.la-anim-5.la-animate {
+    bottom: -20px;
+    z-index: 100;
+    -webkit-transition: -webkit-transform 55s ease-in, bottom 0.0s 55.7s;
+    transition: transform 55s ease-in, bottom 0.0s 55.7s;
+    -webkit-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
 /*Home Page CSS END*/
 
 

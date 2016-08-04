@@ -134,11 +134,16 @@ $("#input_form").submit(function(e){
                     $("#input1_alert").text("");
                     $("#input1_alert").text("");
                 }
-                $("#loader-wrapper").hide();
+                // $("#loader-wrapper").hide();
+                animEl = document.querySelector('.la-anim-5');
+                classie.remove( animEl, 'la-animate' );
+
             },
             beforeSend: function() {
-                // $("#loader1").show();
-                $("#loader-wrapper").show();
+                // $("#loader-wrapper").show();
+                animEl = document.querySelector('.la-anim-5');
+                classie.add( animEl, 'la-animate' );
+
             },
             cache: false,
             contentType: false,
