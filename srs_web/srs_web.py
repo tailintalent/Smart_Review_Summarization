@@ -23,10 +23,10 @@ def scrape_reviews():
 		user_input2 = request.form["product_id2"]
 
 		#filter out product ID from Amazon http link as input 
-		key_word = ["product","dp"]
+		key_word = ["/product/","/dp/","/product-reviews/"]
 		match = next((s for s in key_word if s in user_input1), False)
 		if match and "http" in user_input1:
-		    idx =  user_input1.find(match) + len(match) + 1
+		    idx =  user_input1.find(match) + len(match) 
 		    idx2 = user_input1[idx:].find('/')
 		    product_id =  user_input1[idx:idx+idx2]
 		else: 
@@ -34,7 +34,7 @@ def scrape_reviews():
 
 		match = next((s for s in key_word if s in user_input2), False)
 		if match and "http" in user_input2:
-		    idx =  user_input2.find(match) + len(match) + 1
+		    idx =  user_input2.find(match) + len(match) 
 		    idx2 = user_input2[idx:].find('/')
 		    product_id2 =  user_input2[idx:idx+idx2]
 		else: 
@@ -113,17 +113,24 @@ def showBokehBoxResultWithTwoProductIds(product_id, product_id2):
 		contents2, ft_score_dict2, ft_senIdx_dict2)
 	
 	#query product name
+	maxChar = 70
 	res = select_for_product_id(product_id)
 	prod_name =  res[0]["product_name"]
-	prod_name=prod_name[:70]
+	nChar = len(prod_name)
+	prod_name=prod_name[:maxChar]
 	ind_ = prod_name.rfind(' ')
-	prod_name=prod_name[:ind_]+" ..."
+	prod_name=prod_name[:ind_]
+	if nChar > maxChar:
+		prod_name = prod_name +" ..."
 
 	res = select_for_product_id(product_id2)
 	prod2_name =  res[0]["product_name"]
-	prod2_name=prod2_name[:70]
+	nChar = len(prod2_name)
+	prod2_name=prod2_name[:maxChar]
 	ind_ = prod2_name.rfind(' ')
-	prod2_name=prod2_name[:ind_]+" ..."
+	prod2_name=prod2_name[:ind_]
+	if nChar > maxChar:
+		prod2_name = prod2_name +" ..."
 
 	# create the HTML elements to pass to template
 	figJS,figDivs = components(plots)
