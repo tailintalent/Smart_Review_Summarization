@@ -166,5 +166,19 @@ $(document).ready(function(){
         var Summarize_Button = document.getElementById('Summarize');
         Summarize_Button.value= 'Summarize';
         e.preventDefault();
-    });    
+    }); 
+
+    // when hit the enter key, form is submitted. 
+    $('form').bind('keypress', function(e){
+        if ( e.keyCode == 13 ) {
+            $(this).find( 'input[type=submit]:first').click();
+
+            // hide input 2 because by default, it opens inputs 2
+            $("#input2").hide();
+            var Summarize_Button = document.getElementById('Summarize');
+            Summarize_Button.value= 'Summarize';
+            e.preventDefault();
+        }
+    });
+
 });
