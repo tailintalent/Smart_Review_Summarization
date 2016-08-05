@@ -134,11 +134,16 @@ $("#input_form").submit(function(e){
                     $("#input1_alert").text("");
                     $("#input1_alert").text("");
                 }
-                $("#loader-wrapper").hide();
+                // $("#loader-wrapper").hide();
+                animEl = document.querySelector('.la-anim-5');
+                classie.remove( animEl, 'la-animate' );
+
             },
             beforeSend: function() {
-                // $("#loader1").show();
-                $("#loader-wrapper").show();
+                // $("#loader-wrapper").show();
+                animEl = document.querySelector('.la-anim-5');
+                classie.add( animEl, 'la-animate' );
+
             },
             cache: false,
             contentType: false,
@@ -161,5 +166,19 @@ $(document).ready(function(){
         var Summarize_Button = document.getElementById('Summarize');
         Summarize_Button.value= 'Summarize';
         e.preventDefault();
-    });    
+    }); 
+
+    // when hit the enter key, form is submitted. 
+    $('form').bind('keypress', function(e){
+        if ( e.keyCode == 13 ) {
+            $(this).find( 'input[type=submit]:first').click();
+
+            // hide input 2 because by default, it opens inputs 2
+            $("#input2").hide();
+            var Summarize_Button = document.getElementById('Summarize');
+            Summarize_Button.value= 'Summarize';
+            e.preventDefault();
+        }
+    });
+
 });
