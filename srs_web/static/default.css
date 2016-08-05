@@ -312,8 +312,8 @@ ul.topnav li.icon {display: none;}
 .la-anim-5.la-animate {
     bottom: -20px;
     z-index: 100;
-    -webkit-transition: -webkit-transform 55s ease-in, bottom 0.0s 55.7s;
-    transition: transform 55s ease-in, bottom 0.0s 55.7s;
+    -webkit-transition: -webkit-transform 60s ease-out, bottom 0.0s 60.7s;
+    transition: transform 60s ease-out, bottom 0.0s 60.7s;
     -webkit-transform: translate3d(0%, 0, 0);
     transform: translate3d(0%, 0, 0);
 }
