@@ -69,7 +69,7 @@
 
 header {
     padding-top:0px;
-    padding-bottom:10px;
+    padding-bottom:5px;
     text-align: center;
 }
 
@@ -80,7 +80,7 @@ h1 {
 }
 
 h2{
-    padding-top:30px;
+    padding-top:10px;
     padding-bottom:0px;
     text-align: center;
     margin: auto;
@@ -323,7 +323,7 @@ ul.topnav li.icon {display: none;}
 /*ABOUT Page CSS Begin*/
 #wrap_picture{
     width: 70%;
-    height: 240px;
+    /*height: 240px;*/
     margin-top:20px;
     margin-left: auto;
     margin-right: auto;
@@ -334,7 +334,8 @@ ul.topnav li.icon {display: none;}
 
 #wrap_people {
     margin: 20px;
-    width: 100%;
+    width: 50%;
+    margin: auto;
     overflow: hidden; /* will contain if #first is longer than #second */
 }
 #first_col {

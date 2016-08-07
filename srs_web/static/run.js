@@ -173,11 +173,13 @@ $(document).ready(function(){
         if ( e.keyCode == 13 ) {
             $(this).find( 'input[type=submit]:first').click();
 
-            // hide input 2 because by default, it opens inputs 2
-            $("#input2").hide();
-            var Summarize_Button = document.getElementById('Summarize');
-            Summarize_Button.value= 'Summarize';
-            e.preventDefault();
+            if (document.forms['input_form'].elements['product_id2'].value == ""){
+                // hide input 2 because by default, it opens inputs 2
+                $("#input2").hide();
+                var Summarize_Button = document.getElementById('Summarize');
+                Summarize_Button.value= 'Summarize';
+                e.preventDefault();
+            }
         }
     });
 
