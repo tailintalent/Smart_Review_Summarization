@@ -140,6 +140,10 @@ def showBokehBoxResultWithTwoProductIds(product_id, product_id2):
 def aboutPage():
 	return render_template('about.html')
 
+@app.route('/project')
+def projectPage():
+	return render_template('project.html')
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run(host='0.0.0.0', port=80,threaded=True)

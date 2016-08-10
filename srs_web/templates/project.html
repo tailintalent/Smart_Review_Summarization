@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+              integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+              crossorigin="anonymous"></link>
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300'
+              rel='stylesheet' type='text/css'></link>
+<link rel="stylesheet" href="static/default.css">
+<link rel="stylesheet" href="static/markdown.css">
+<style>
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAYcAA0AAAAACjQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABwAAAAca8vGTk9TLzIAAAFMAAAARAAAAFZG1VHVY21hcAAAAZAAAAA+AAABQgAP9AdjdnQgAAAB0AAAAAQAAAAEACICiGdhc3AAAAHUAAAACAAAAAj//wADZ2x5ZgAAAdwAAADRAAABEKyikaNoZWFkAAACsAAAAC0AAAA2AtXoA2hoZWEAAALgAAAAHAAAACQHngNFaG10eAAAAvwAAAAQAAAAEAwAACJsb2NhAAADDAAAAAoAAAAKALIAVG1heHAAAAMYAAAAHwAAACABEAB2bmFtZQAAAzgAAALBAAAFu3I9x/Nwb3N0AAAF/AAAAB0AAAAvaoFvbwAAAAEAAAAAzBdyYwAAAADP2IQvAAAAAM/bz7t4nGNgZGFgnMDAysDB1Ml0hoGBoR9CM75mMGLkYGBgYmBlZsAKAtJcUxgcPsR8iGF2+O/AEMPsznAYKMwIkgMA5REMOXicY2BgYGaAYBkGRgYQsAHyGMF8FgYFIM0ChED+h5j//yEk/3KoSgZGNgYYk4GRCUgwMaACRoZhDwCs7QgGAAAAIgKIAAAAAf//AAJ4nHWMMQrCQBBF/0zWrCCIKUQsTDCL2EXMohYGSSmorScInsRGL2DOYJe0Ntp7BK+gJ1BxF1stZvjz/v8DRghQzEc4kIgKwiAppcA9LtzKLSkdNhKFY3HF4lK69ExKslx7Xa+vPRVS43G98vG1DnkDMIBUgFN0MDXflU8tbaZOUkXUH0+U27RoRpOIyCKjbMCVejwypzJJG4jIwb43rfl6wbwanocrJm9XFYfskuVC5K/TPyczNU7b84CXcbxks1Un6H6tLH9vf2LRnn8Ax7A5WQAAAHicY2BkYGAA4teL1+yI57f5ysDNwgAC529f0kOmWRiYVgEpDgYmEA8AUzEKsQAAAHicY2BkYGB2+O/AEMPCAAJAkpEBFbAAADgKAe0EAAAiAAAAAAQAAAAEAAAAAAAAKgAqACoAiAAAeJxjYGRgYGBhsGFgYgABEMkFhAwM/xn0QAIAD6YBhwB4nI1Ty07cMBS9QwKlQapQW3VXySvEqDCZGbGaHULiIQ1FKgjWMxknMfLEke2A+IJu+wntrt/QbVf9gG75jK577Lg8K1qQPCfnnnt8fX1NRC/pmjrk/zprC+8D7tBy9DHgBXoWfQ44Av8t4Bj4Z8CLtBL9CniJluPXASf0Lm4CXqFX8Q84dOLnMB17N4c7tBo1AS/Qi+hTwBH4rwHHwN8DXqQ30XXAS7QaLwSc0Gn8NuAVWou/gFmnjLrEaEh9GmDdDGgL3B4JsrRPDU2hTOiMSuJUIdKQQayiAth69r6akSSFqIJuA19TrzCIaY8sIoxyrNIrL//pw7A2iMygkX5vDj+G+kuoLdX4GlGK/8Lnlz6/h9MpmoO9rafrz7ILXEHHaAx95s9lsI7AHNMBWEZHULnfAXwG9/ZqdzLI08iuwRloXE8kfhXYAvE23+23DU3t626rbs8/8adv+9DWknsHp3E17oCf+Z48rvEQNZ78paYM38qfk3v/u3l3u3GXN2Dmvmvpf1Srwk3pB/VSsp512bA/GG5i2WJ7wu430yQ5K3nFGiOqgtmSB5pJVSizwaacmUZzZhXLlZTq8qGGFY2YcSkqbth6aW1tRmlaCFs2016m5qn36SbJrqosG4uMV4aP2PHBmB3tjtmgN2izkGQyLWprekbIntJFing32a5rKWCN/SdSoga45EJykyQ7asZvHQ8PTm6cslIpwyeyjbVltNikc2HTR7YKh9LBl9DADC0U/jLcBZDKrMhUBfQBvXRzLtFtjU9eNHKin0x5InTqb8lNpfKv1s1xHzTXRqgKzek/mb7nB8RZTCDhGEX3kK/8Q75AmUM/eLkfA+0Hi908Kx4eNsMgudg5GLdRD7a84npi+YxNr5i5KIbW5izXas7cHXIMAau1OueZhfj+cOcP3P8MNIWLyYOBuxL6DRylJ4cAAAB4nGNgYoAALjDJyIAOWMCiTIxMLDmZedkABtIBygAAAA==) format('woff');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+div {
+    width: 980px;
+    margin-right: auto;
+    margin-left: auto;
+}
+</style>
+
+<title>project</title>
+</head>
+
+<body>
+<ul class="topnav" id="myTopnav">
+    <li><a href="/"><img src="../static/images/logo.png" height="25" width="73" /></a>
+    <li><a href="/">Home</a></li>
+    <li><a href="/project">Project</a></li>
+    <li><a href="/about">About</a></li>
+    <li class="icon">
+      <a href="javascript:void(0);" onclick="myFunction()">&#9776;</a>
+    </li>
+  </ul>
+<div>
+<article class="markdown-body"><h1>
+<a id="user-content-smart-review-summarization-srs-overview" class="anchor" href="#smart-review-summarization-srs-overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Smart Review Summarization (SRS) Overview</h1>
+
+<h2>
+<a id="user-content-motivation" class="anchor" href="#motivation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Motivation</h2>
+
+<p>Over the past decade, lots of human activities have been steadily switched to online versions: Amazon for shopping, Yelp for dining, Netflix for entertaining, etc. To help customers make informed decisions, almost all of them provide customer review systems. However, lots of popular products have hundreds to even thousands of reviews, which makes it almost impossible to read through, summarize and compare against other products. </p>
+
+<p>Here we present our application <strong>SRS</strong>, which is designed to tackle the above issue. By using Natural Language Processing and Machine Learning techniques, <strong>SRS</strong> is able to instantly help summarize customers' opinions on various aspects of a particular product. On top of that, it also enables users to compare sentiment scores for two similar products.</p>
+
+<h2>
+<a id="user-content-workflow" class="anchor" href="#workflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Workflow</h2>
+
+<p>An <strong>SRS</strong> user is only required to type in a product ID or product URL from Amazon, the rest of work will be taken care of by <strong>SRS internal workflow</strong>.
+</p>
+<p><a href="static/images/workflow.png" target="_blank"><img src="static/images/workflow.png" alt="Alt text" style="max-width:70%;"></a></p>
+
+<p>Once <em>SRS front-end</em> gets user query, it invokes <em>Review Scraper</em> to work, which collects reviews and stores into <em>SRS Database</em>. Then <em>Aspect Classifier</em> starts to analyze each sentence in the reviews, classifying which aspects the review is discussing (e.g., <code>I like this camera, it can last whole day without re-charging</code> will be classified as <code>battery</code>). Later <em>sentiment analyzer</em> aggregates review positivity for each aspect and send the summary to <em>SRS front-end</em> to present. A typical summary box plot is shown below.</p>
+
+<p><a href="static/images/typical_plot.png" target="_blank"><img src="static/images/typical_plot.png" alt="Alt text" style="max-width:70%;"></a></p>
+
+<h2>
+<a id="user-content-review-scraper" class="anchor" href="#review-scraper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Review Scraper</h2>
+
+<p>Once user requests for a product, <strong>Review Scraper</strong> will first be triggered if the product is not recorded before in database. By using <code>python-amazon-simple-product-api</code>, <strong>Review Scraper</strong> is able to scrape reviews page by page. </p>
+
+<p>This process can be fairly long especially for products with thousands of reviews. A time limit of 30 seconds is set and top <em>helpful</em> reviews are first scraped so that users can get most relevant information within reasonable time. In order to make reviews gradually complete, <strong>Review Scraper</strong> is able to continue scraping from where previous scraping stops. Once a product's reviews are considered complete (a certain ratio between number of reviews in database and total number of reviews online), future requests for that product don't trigger <strong>Review Scraper</strong> any more.</p>
+
+<h2>
+<a id="user-content-aspect-classifiers" class="anchor" href="#aspect-classifiers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Aspect Classifiers</h2>
+
+<p>One review usually contains many points, covering more than one aspects of a product. One of the biggest values this project creates is provide sentiment scores for each aspect of the product so that users are informed in a much deeper level compared with given an overall score. So the most crucial part of <strong>SRS</strong> is to classify each sentence into several aspects.</p>
+
+<p>Currently, we've designed an extensible classification framework with three interchangeable classifiers: <strong>maxEntropy</strong>, <strong>word2vec</strong>, <strong>word2vec_svm</strong>.</p>
+
+<h3>
+<a id="user-content-maxentropy" class="anchor" href="#maxentropy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>maxEntropy</h3>
+
+<h3>
+<a id="user-content-word2vec" class="anchor" href="#word2vec" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>word2vec</h3>
+
+<h3>
+<a id="user-content-word2vec_svm" class="anchor" href="#word2vec_svm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>word2vec_svm</h3>
+
+<h2>
+<a id="user-content-sentiment-analyzer" class="anchor" href="#sentiment-analyzer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sentiment Analyzer</h2>
+
+<p>After classification, all the review sentences are grouped by aspects.  <strong>Sentiment Analyzer</strong> is designed to go through sentences aspect by aspect and assigns sentiment scores for each single sentence. Eventually each aspect has a distribution of sentiment, which makes it ready for final rendering in <strong>SRS front-end</strong> as well as comparison with another product if necessary.</p>
+</article>
+</div>
+</body>
+</html>
