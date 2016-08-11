@@ -12,5 +12,6 @@ dependencies:
   - flask
   - pandas
   - bokeh
+  - vaderSentiment
 #  - fake_useragent
 #  - amazon_scraper
