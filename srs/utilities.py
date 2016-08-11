@@ -46,7 +46,7 @@ def tokenize(string, stem=True):
     import re
     tokenizer = PottsTokenizer(preserve_case=False)
     token_list = tokenizer.tokenize(string)
-    punctuation = re.compile(r'[-.?!,":;$*()|0-9]') # remove these punctuations and number 
+    punctuation = re.compile(r'[-.?!,":;$/*()|0-9]') # remove these punctuations and number 
     token_list = [punctuation.sub("", word) for word in token_list]  
     token_list = filter(None, token_list) #filters empty   
 
