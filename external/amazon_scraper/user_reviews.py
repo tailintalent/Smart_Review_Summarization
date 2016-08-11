@@ -5,7 +5,7 @@ try:
 except:
     import urllib.parse as urlparse
 from bs4 import BeautifulSoup
-from srs.amazon_scraper import (
+from external.amazon_scraper import (
     get,
     get_review_date,
     retry,

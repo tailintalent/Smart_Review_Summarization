@@ -1,6 +1,6 @@
 from configparser import ConfigParser, ExtendedInterpolation
 import sys
-from srs.amazon_scraper import AmazonScraper
+from external.amazon_scraper import AmazonScraper
 import time
 import datetime
 import logging.config
