@@ -154,6 +154,16 @@ def update_contents_for_product_id(product_id, contents_new, review_ids_new, rat
 	
 	client.close()
 
+def select_ft_score():
+	'''
+	find all product ID where ft_score is not empty 
+	'''
+	client, db = connect_to_db()
+	query_res = list(db.product_collection.find({"ft_score":{ "$exists": True, "$ne": {} }}))
+	disconnect_db(client)
+	return query_res
+
+
 if __name__ == '__main__':
 	# function testing
 	product_id = 'B00THKEKEQ'

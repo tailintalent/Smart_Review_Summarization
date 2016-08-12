@@ -31,3 +31,22 @@ def get_ftScore_ftSenIdx_dicts(sentences, start_idx = 0, forbidden_feature='no f
 
     return ft_score_dict, ft_senIdx_dict
 
+def replace_score(predictor_name = 'MaxEntropy'):
+    from database import update_score_for_product_id, select_ft_score
+    from predictor import loadTrainedPredictor
+    from srs_local import get_ft_dicts_from_contents
+    '''
+    this function replaces all scores stored in the db with scores by vanderSentiment
+    '''
+    res = select_ft_score()
+    predictor = loadTrainedPredictor(predictor_name)
+    # print res[1]["ft_score"]
+    for r in res: 
+        product_id = r["product_id"]
+        prod_contents = r["contents"]
+        prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor)
+        update_score_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
+
+if __name__ == '__main__':
+    replace_score()
+
