@@ -92,7 +92,6 @@ def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold
 			else:
 				print "Do not find new reviews for %s" % product_id
 				if len(prod_ft_score_dict) == 0 or len(prod_ft_senIdx_dict) == 0:
-					prod_contents = prod_contents + prod_contents_new
 					prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor)
 
 					update_score_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
