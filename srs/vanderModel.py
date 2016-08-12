@@ -6,9 +6,8 @@ def get_sentiment_score(ls):
 	input sentence object
 	this method estimate a sentiment score based on vander model
 	'''
-	vs = vaderSentiment(ls.content)
+	vs = vaderSentiment(ls.content.encode('ascii', 'ignore')) # encode is important to avoid error
 	# sample output of vs: {'neg': 0.736, 'neu': 0.264, 'pos': 0.0, 'compound': -0.4199}
-
 	ls.score = vs['pos']-vs['neg']
 
 def get_sentiment_score_for_sentences(sentences):
@@ -31,3 +30,4 @@ def get_ftScore_ftSenIdx_dicts(sentences, start_idx = 0, forbidden_feature='no f
             ft_senIdx_dict[ft].append(idx + start_idx)
 
     return ft_score_dict, ft_senIdx_dict
+
