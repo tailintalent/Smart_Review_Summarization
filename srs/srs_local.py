@@ -2,7 +2,7 @@ from scraper import main as scraper_main, createAmazonScraper, scrape_num_review
 from predictor import MaxEntropy_Predictor, Word2Vec_Predictor, loadTrainedPredictor
 from srs import settings
 from utilities import loadScraperDataFromDB, Sentence
-from swnModel import get_sentiment_score_for_sentences, get_ftScore_ftSenIdx_dicts
+from vanderModel import get_sentiment_score_for_sentences, get_ftScore_ftSenIdx_dicts
 from sentiment_plot import box_plot
 from database import upsert_contents_for_product_id, update_score_for_product_id, update_num_reviews_for_product_id, update_contents_for_product_id, select_for_product_id
 import os
