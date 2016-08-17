@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from srs import settings
 import os
+import json
 
 def connect_to_db():
 	client = MongoClient('localhost', 27017)
@@ -154,6 +155,43 @@ def select_ft_score():
 	disconnect_db(client)
 	return query_res
 
+def getWordlistDictFromDB(category):
+
+	client, db = connect_to_db()
+	category_collection = db.category_collection
+	query_res = list(category_collection.find({"category": category}))
+	disconnect_db(client)
+
+	if len(query_res) < 1:
+		raise Exception('Category: {0} not found in database'.format(category))
+	elif len(query_res) > 1:
+		raise Exception('Category: {0} found multiple occurances in database'.format(category))
+
+	result = query_res[0]
+	wordlistDict = result['wordlist_dict']
+
+	return wordlistDict
+
+def fillCategoryCollectionInDB(categoryFile):
+
+	# load json file
+	client, db = connect_to_db()
+	category_collection = db.category_collection
+
+	predictor_data = settings['predictor_data']
+	categoryFileIn = open(os.path.join(predictor_data, categoryFile), 'r')
+	category_dict = json.load(categoryFileIn)
+	categoryFileIn.close()
+	for category, wordlist_dict in category_dict.iteritems():
+		category_document = {
+		"category":category,
+		"wordlist_dict": wordlist_dict,
+		}
+		
+		# insert
+		category_collection.save(category_document)
+
+	disconnect_db(client)
 
 if __name__ == '__main__':
 	# function testing
@@ -162,4 +200,4 @@ if __name__ == '__main__':
 	print has_review_id(product_id,review_id)
 	res = select_for_product_id(product_id)
 	res_content =  res[0]["ft_senIdx"]
-	print res_content 
+	print res_content
