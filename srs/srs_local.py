@@ -31,7 +31,7 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 			prod_num_reviews = len(prod_review_ids)
 
 		# classify, sentiment score
-		predictor = loadTrainedPredictor(predictor_name)
+		predictor = loadTrainedPredictor(predictor_name, prod_category[-1])
 		prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor)
 		
 		# insert new entry
@@ -73,7 +73,7 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 			scraper_main(amazonScraper, product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit)		
 
 			# classify, get sentiment score
-			predictor = loadTrainedPredictor(predictor_name)
+			predictor = loadTrainedPredictor(predictor_name, prod_category[-1])
 			if len(prod_contents_new) > 0:
 				print "Filling scraped new reviews into db..."
 				if len(prod_ft_score_dict) == 0 or len(prod_ft_senIdx_dict) == 0:				
@@ -105,7 +105,7 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 				This only triggered if product review is loaded from file and not scraped directly
 				'''
 				# classify, sentiment score
-				predictor = loadTrainedPredictor(predictor_name)
+				predictor = loadTrainedPredictor(predictor_name, prod_category[-1])
 				prod_ft_score_dict, prod_ft_senIdx_dict = \
 				get_ft_dicts_from_contents(prod_contents, predictor)
 				
