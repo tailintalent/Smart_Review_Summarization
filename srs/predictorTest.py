@@ -6,6 +6,7 @@ import os
 import json
 import unittest
 from srs import settings
+from word2vec.wordvectors import WordVectors
 
 class TestMaxEntropy_Predictor(unittest.TestCase):
 
@@ -44,6 +45,27 @@ class TestMaxEntropy_Predictor(unittest.TestCase):
 				correct_idx.append(idx)
 		class_error = 1.0 - correct/len(sentences)
 		print 'The classification error is: %.2f' % (class_error)
+
+class TestPredictorHelperFunctions(unittest.TestCase):
+
+	def testLoadTrainedPredictor(self):
+
+		predictorKernel = 'Word2Vec'
+		category = 'Tablets'
+		predictor = loadTrainedPredictor(predictorKernel, category)
+
+		# check type of predictor attributes
+		self.assertTrue(isinstance(predictor.model, WordVectors))
+		self.assertTrue(isinstance(predictor.wordlist_dict, dict))
+		self.assertTrue(isinstance(predictor.static_seedwords_vec, dict))
+		
+		# check if using right wordlist for the specified category
+		wordlist_dict = predictor.wordlist_dict
+		self.assertIn('wifi', wordlist_dict)
+		self.assertIn('keyboard', wordlist_dict)
+		self.assertIn('touch', wordlist_dict)
+		self.assertIn('games', wordlist_dict)
+
 
 if __name__ == '__main__':
     unittest.main()
