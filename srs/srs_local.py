@@ -27,6 +27,9 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 		amazonScraper = createAmazonScraper()
 		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = scraper_main(amazonScraper, product_id, [], [], scrape_time_limit)
 		prod_num_reviews, prod_category = scrape_num_review_and_category(product_id)
+		if len(prod_category) > 3:
+			prod_category = prod_category[:3]
+		
 		if prod_num_reviews == -1:
 			prod_num_reviews = len(prod_review_ids)
 
@@ -57,6 +60,12 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 		# scrape for total number of review and category
 		prod_num_reviews, prod_category = scrape_num_review_and_category(product_id)
 		prod_num_reviews_previous = query_res[0]['num_reviews']
+
+		if len(prod_category) > 3:
+			prod_category = prod_category[:3]
+
+		print prod_category
+
 		num_review_db = len(query_res[0]["review_ids"])
 		if prod_num_reviews == -1:
 			prod_num_reviews = max(prod_num_reviews_previous, num_review_db)
@@ -128,5 +137,7 @@ def main(product_id):
 	plot(product_id)
 
 if __name__ == '__main__':
-	product_id = 'B00HV6KL6Y'
-	main(product_id)
+	product_id = 'B00V49LL90' # Samsung Galaxy Tab A 8-Inch Tablet
+	isFilledIn = fill_in_db(product_id)
+
+	print isFilledIn
