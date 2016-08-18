@@ -28,6 +28,27 @@ div {
 }
 </style>
 
+<!-- the script below renders Latex input! -->
+<style TYPE="text/css"> 
+code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!-- the script above renders Latex input!  -->
+
 <title>project</title>
 </head>
 
@@ -79,6 +100,15 @@ div {
 
 <h3>
 <a id="user-content-maxentropy" class="anchor" href="#maxentropy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>maxEntropy</h3>
+<p>Maximum entropy is a supervised learning algorithm that often used in text classification. The idea of maximum entropy in classification is similar to that of the Naive Bayes that they are both discriminative model that estimate the conditional probability ($p(a|s)$) of each predefined product aspect given a sentence/fragment from review. Unlike Naive Bayes, maximum entropy does not hurt by strong independence assumption in the presence of overlapping features that defines the product aspect. For example, if the word "shoot" is a feature for product aspect "picture" and "video", then maximum entropy could naturally handle this during training of parameters. 
+</p>
+<p>The conditional probability in maximum entropy is a parameterized exponential distribution or more precisely it called maximum entropy probability distribution. </p>
+<p align="center"> $ P(a_i|s_j) = \frac{\mathrm{exp}( \lambda_i^\intercal f_i(s_j,a_i))}{\sum_{i} \mathrm{exp}(\lambda_i^\intercal f_i(s_j,a_i))} $
+</p>
+<p>Where $\lambda_i$ is a vector of parameters for aspect $i$, $f_i$ is a vector of feature. The choice of feature is arbitrary and the text classifier will yield the best result when chosing key words relevant to the product aspect. Currently, we defined the feature space based on first 20 key words in the tf-idf ranking and the their values are simply the occurrence of the chosen key words. Choice of feature space can definately exploited to further improve classification in the future. During the training process, the parameter matrix $\Lambda$ is to be determined by minimizing the negative log of the sum of conditional probability for all sentences assuming all sentences are independent of each other. 
+</p>
+<p>The maximum entropy has yields a satisfactory accuracy (>60%) that is used as a benchmark for comparing other text classification algorithms. 
+<p>
 
 <h3>
 <a id="user-content-word2vec" class="anchor" href="#word2vec" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>word2vec</h3>
