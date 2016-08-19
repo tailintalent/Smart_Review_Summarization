@@ -54,7 +54,7 @@ def tokenize(string, stem=True):
 
     #filter out stopwords 
     STOPWORDS = set(nltk.corpus.stopwords.words('english'))
-    STOPWORDS.update(('nikon','would','does','got',"doesn't",'well'))
+    STOPWORDS.update(('would','does','got',"doesn't","it's","isn't","don't","i'm","i'll","i've", "=","can't","didn't","etc","+","%","won't","that's","nikon","g","&", "sure", "may", "yet", "ok","haven't","else","maybe","wouldn't","couldn't","via","rt","'","you're","almost","v","there's","#"))
     token_list = [word for word in token_list if word not in STOPWORDS]
 
     #stemmer 
