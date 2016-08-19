@@ -17,7 +17,7 @@ def get_ft_dicts_from_contents(contents, predictor, start_idx = 0):
 	return get_ftScore_ftSenIdx_dicts(sentences, start_idx)
 	
 
-def fill_in_db(product_id, predictor_name = 'MaxEntropy', review_ratio_threshold = 0.8, scrape_time_limit = 30):	
+def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold = 0.8, scrape_time_limit = 30):	
 	# fetch product info from db
 	query_res = select_for_product_id(product_id)
 
