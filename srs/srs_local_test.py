@@ -48,10 +48,10 @@ class TestSrsLocal(unittest.TestCase):
 
 		self.assertEqual(closest_registered_category, expected_closest_registered_category)
 
-	def test_get_registered_category(self):
+	def test_get_reviews_num_and_registered_category(self):
 
 		product_id = 'B00V49LL90'
-		registered_category = get_registered_category(product_id)
+		_, registered_category = get_reviews_num_and_registered_category(product_id)
 		expected_registered_category = ["Electronics", "Computers & Accessories","Tablets"]
 
 		self.assertEqual(registered_category, expected_registered_category)
@@ -68,7 +68,7 @@ class TestSrsLocal(unittest.TestCase):
 		
 		# the srs helps to find out what registered category
 		# this product belongs to
-		registered_category = get_registered_category(product_id)
+		_, registered_category = get_reviews_num_and_registered_category(product_id)
 		expected_registered_category = ["Electronics", "Computers & Accessories", "Tablets"]
 
 		self.assertEqual(registered_category, expected_registered_category)
