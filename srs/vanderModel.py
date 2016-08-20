@@ -2,13 +2,19 @@ from vaderSentiment.vaderSentiment import sentiment as vaderSentiment
 from collections import defaultdict
 
 def get_sentiment_score(ls):
-	'''
-	input sentence object
-	this method estimate a sentiment score based on vander model
-	'''
-	vs = vaderSentiment(ls.content.decode('ascii','ignore').encode('ascii', 'ignore')) # decode and encode is important to avoid error
-	# sample output of vs: {'neg': 0.736, 'neu': 0.264, 'pos': 0.0, 'compound': -0.4199}
-	ls.score = vs['pos']-vs['neg']
+    '''
+    input sentence object
+    this method estimate a sentiment score based on vander model
+    '''
+    try:
+        ascii_str = ls.content.decode('ascii','ignore').encode('ascii', 'ignore')
+        vs = vaderSentiment(ascii_str) # decode and encode is important to avoid error
+        # sample output of vs: {'neg': 0.736, 'neu': 0.264, 'pos': 0.0, 'compound': -0.4199}
+        ls.score = vs['pos']-vs['neg']
+    except Exception, e:
+        raise e
+        print 'bypassed an encoding error'
+        ls.score = 0;
 
 def get_sentiment_score_for_sentences(sentences):
 
