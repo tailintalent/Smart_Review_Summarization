@@ -302,7 +302,10 @@ def scrape_num_review_and_category(productID, max_scrape_loop = 2, current_loop=
             return scrape_num_review_and_category(productID, max_scrape_loop, current_loop)
 
 
-def main(amazonScraper, product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit = 30):
+def main(product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit = 30):
+    
+    amazonScraper = createAmazonScraper()
+
     try: 
         product_name, contents, review_ids, ratings, review_ending_sentence, scraped_pages_new = \
             amazonScraper.scrape_reviews(product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit)

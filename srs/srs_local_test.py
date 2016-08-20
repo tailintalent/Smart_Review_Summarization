@@ -1,5 +1,5 @@
 import unittest
-from scraper import main as scraper_main, createAmazonScraper, scrape_num_review_and_category
+from scraper import main as api_scraper, scrape_num_review_and_category
 from srs_local import *
 from srs import settings
 from sentiment_plot import box_plot
@@ -61,9 +61,8 @@ class TestSrsLocal(unittest.TestCase):
 		# A searches a product id to 
 		# finds out srs first scrapes reviews for him
 		product_id = 'B00V49LL90'
-		amazonScraper = createAmazonScraper()
 		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = \
-		scraper_main(amazonScraper, product_id, [], [], scrape_time_limit=30)
+		api_scraper(product_id, [], [], scrape_time_limit=30)
 
 		self.assertTrue(len(prod_contents) > 0)
 		

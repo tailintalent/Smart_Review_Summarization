@@ -1,4 +1,4 @@
-from scraper import main as scraper_main, createAmazonScraper, scrape_num_review_and_category
+from scraper import main as api_scraper, scrape_num_review_and_category
 from predictor import MaxEntropy_Predictor, Word2Vec_Predictor, loadTrainedPredictor
 from srs import settings
 from utilities import loadScraperDataFromDB, Sentence
@@ -64,8 +64,7 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 	if len(query_res) == 0: # not in db yet
 		print "{0} not in db, now scraping...".format(product_id)
 		# scrape product info and review contents:
-		amazonScraper = createAmazonScraper()
-		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = scraper_main(amazonScraper, product_id, [], [], scrape_time_limit)
+		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = api_scraper(amazonScraper, product_id, [], [], scrape_time_limit)
 		prod_num_reviews, scraped_category = scrape_num_review_and_category(product_id)
 		registered_categories = get_all_unique_registered_categories()
 		registered_category = get_closest_registered_category(scraped_category, registered_categories)		
@@ -116,9 +115,8 @@ def fill_in_db(product_id, predictor_name = 'Word2Vec', review_ratio_threshold =
 		if num_review_db < review_ratio_threshold * prod_num_reviews and num_review_db < 100: 
 			print "But not enough reviews in db, scrapping for more..."
 			# scrape contents
-			amazonScraper = createAmazonScraper()
 			_, prod_contents_new, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = \
-			scraper_main(amazonScraper, product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit)		
+			api_scraper(amazonScraper, product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit)		
 
 			# classify, get sentiment score
 			predictor = loadTrainedPredictor(predictor_name, registered_category)
