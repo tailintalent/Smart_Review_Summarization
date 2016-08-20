@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from srs import settings
 import os
+import json
 
 def connect_to_db():
 	client = MongoClient('localhost', 27017)
@@ -154,12 +155,71 @@ def select_ft_score():
 	disconnect_db(client)
 	return query_res
 
+def getWordlistDictFromDB2(category):
+
+	client, db = connect_to_db()
+	category_collection = db.category_collection
+	query_res = list(category_collection.find_one({"category": category}))
+	disconnect_db(client)
+
+	if len(query_res) < 1:
+		raise Exception('Category: {0} not found in database'.format(category))
+
+	result = query_res[0]
+	wordlistDictWithWeights = result['wordlist_dict']
+	wordlistDict = {}
+	for aspect in wordlistDictWithWeights:
+		wordlistDict[aspect] = [sublist[0] for sublist in wordlistDictWithWeights[aspect]]
+
+	return wordlistDict
+
+def getWordlistDictFromDB(category):
+
+	client, db = connect_to_db()
+	category_collection = db.category_collection
+	query_res = category_collection.find_one({"category": category})
+	disconnect_db(client)
+
+	if len(query_res) < 1:
+		raise Exception('Category: {0} not found in database'.format(category))
+
+	wordlistDict = query_res['wordlist_dict']
+
+	return wordlistDict
+
+def fillCategoryCollectionInDB(categoryFile):
+
+	# load json file
+	client, db = connect_to_db()
+	category_collection = db.category_collection
+
+	predictor_data = settings['predictor_data']
+	categoryFileIn = open(os.path.join(predictor_data, categoryFile), 'r')
+	categories = json.load(categoryFileIn)
+	categoryFileIn.close()
+	for category_dict in categories:		
+		category_collection.save(category_dict)
+
+	disconnect_db(client)
+
+def get_all_unique_registered_categories():
+
+	client, db = connect_to_db()
+	query_res = list(db.category_collection.find({}, {"category":1, "_id":0}))
+	disconnect_db(client)
+	registered_categories = set([tuple(item["category"]) for item in query_res])
+	registered_categories = list(registered_categories)
+
+	return [list(item) for item in registered_categories]
 
 if __name__ == '__main__':
 	# function testing
-	product_id = 'B00THKEKEQ'
-	review_id = 'R3V15CFZSUNBQT'
-	print has_review_id(product_id,review_id)
-	res = select_for_product_id(product_id)
-	res_content =  res[0]["ft_senIdx"]
-	print res_content 
+	# product_id = 'B00THKEKEQ'
+	# review_id = 'R3V15CFZSUNBQT'
+	# print has_review_id(product_id,review_id)
+	# res = select_for_product_id(product_id)
+	# res_content =  res[0]["ft_senIdx"]
+	# print res_content
+
+	# fill in category collection
+	fillCategoryCollectionInDB('category.txt')

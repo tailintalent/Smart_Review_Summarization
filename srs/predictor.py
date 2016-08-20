@@ -9,6 +9,7 @@ from word2VecModel import AspectPatterns, predict_aspect_word2vec, static_aspect
 from utilities import loadUsefulTrainingData, loadScraperDataFromDB, Sentence
 from srs import settings
 from sklearn.externals import joblib
+from database import getWordlistDictFromDB
 
 #defining abstract class Predictor
 class Predictor(object):
@@ -120,17 +121,19 @@ class Word2Vec_Predictor(Predictor):
 	def __init__(self, aspectPattern_names=['adj_nn','nn']):
 		self.aspectPatterns = AspectPatterns(aspectPattern_names)
 		self.model = []
-		self.static_aspects_all = []
+		self.wordlist_dict = []
 		self.static_seedwords_vec = {}
 
-	def load(self, model_filename, word2vec_dict_filename):
-		model_file_path = getPredictorDataFilePath(model_filename)
-		word2vec_dict_path = getPredictorDataFilePath(word2vec_dict_filename)
-		self.model = word2vec.load(model_file_path)  #load word2vec model
-		with open(word2vec_dict_path, 'r') as file:
-			self.static_aspects_all = json.load(file)
+	def getWordlistDict(self, category):
 
-		self.static_seedwords_vec = static_aspect_to_vec(self.static_aspects_all, self.model)
+		self.wordlist_dict = getWordlistDictFromDB(category)
+
+	def load(self, model_filename, category):
+		model_file_path = getPredictorDataFilePath(model_filename)
+		self.model = word2vec.load(model_file_path)  #load word2vec model
+		self.getWordlistDict(category)
+
+		self.static_seedwords_vec = static_aspect_to_vec(self.wordlist_dict, self.model)
 
 	def train(self):
 		pass
@@ -194,7 +197,7 @@ def getPredictorDataFilePath(filename):
 		raise Exception("{} is not found!".format(predictor_datafile_path))
 
 
-def loadTrainedPredictor(predictor_name):
+def loadTrainedPredictor(predictor_name, category):
 	
 	if predictor_name == 'MaxEntropy':
 		params_filename = 'lambda_opt_regu3.txt'
@@ -203,7 +206,7 @@ def loadTrainedPredictor(predictor_name):
 		predictor.load(wordlist_filename, params_filename)
 	elif predictor_name == 'Word2Vec':
 		predictor = Word2Vec_Predictor()
-		predictor.load('text8.bin','word2vec_dict.txt')
+		predictor.load('text8.bin', category)
 
 	elif predictor_name == 'Word2Vec_svm':
 		predictor = Word2Vec_svm_Predictor()
@@ -220,7 +223,7 @@ if __name__ == '__main__':
 	sentences = loadUsefulTrainingData(static_traning_data_dir)
 
 	# testing for Word2Vec predictor
-	p = loadTrainedPredictor('Word2Vec')	
+	p = loadTrainedPredictor('Word2Vec', 'Digital Cameras')	
 	
 	sentence = sentences[0]
 	print sentence.content

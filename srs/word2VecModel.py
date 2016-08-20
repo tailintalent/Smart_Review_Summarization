@@ -60,11 +60,10 @@ def distill_dynamic_sentencelist(sentence_list, aspectPatterns):
 		distill_dynamic(sentence, aspectPatterns)
 
 
-def static_aspect_to_vec(static_aspects_all, model):
-	wordlist_dic = static_aspects_all['wordlist_dic']
+def static_aspect_to_vec(wordlist_dict, model):
 
 	static_seedwords_vec={}
-	for static_aspect, seedwords in wordlist_dic.iteritems(): 
+	for static_aspect, seedwords in wordlist_dict.iteritems(): 
 		for word in seedwords:
 			if word in model:
 				if static_aspect in static_seedwords_vec:
