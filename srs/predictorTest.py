@@ -51,7 +51,7 @@ class TestPredictorHelperFunctions(unittest.TestCase):
 	def testLoadTrainedPredictor(self):
 
 		predictorKernel = 'Word2Vec'
-		category = 'Tablets'
+		category = ["Electronics", "Computers & Accessories", "Tablets"]
 		predictor = loadTrainedPredictor(predictorKernel, category)
 
 		# check type of predictor attributes

@@ -202,6 +202,16 @@ def fillCategoryCollectionInDB(categoryFile):
 
 	disconnect_db(client)
 
+def get_all_unique_registered_categories():
+
+	client, db = connect_to_db()
+	query_res = list(db.category_collection.find({}, {"category":1, "_id":0}))
+	disconnect_db(client)
+	registered_categories = set([tuple(item["category"]) for item in query_res])
+	registered_categories = list(registered_categories)
+
+	return [list(item) for item in registered_categories]
+
 if __name__ == '__main__':
 	# function testing
 	# product_id = 'B00THKEKEQ'

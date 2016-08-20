@@ -1,6 +1,6 @@
 [
 {
-"category": ["Electronics", "Computers & Accessories", "Computers & Tablets", "Tablets"],
+"category": ["Electronics", "Computers & Accessories", "Tablets"],
 "wordlist_dict":{"battery": ["battery", "life", "hours", "charge", "long", "%", "good", "lasts"], "screen": ["screen", "touch", "touchscreen", "resolution", "screens", "tablet", "good", "size"], "wifi": ["wifi", "connection", "signal", "connect", "connected", "tablet", "gps", "battery"], "camera": ["camera", "cameras", "front", "rear", "facing", "pictures", "video", "mp"], "games": ["games", "play", "playing", "apps", "movies", "tablet", "use", "web"], "keyboard": ["keyboard", "bluetooth", "dock", "mouse", "usb", "tablet", "use", "keyboards"], "touch": ["touch", "screen", "touchscreen", "touchpad", "responsive", "keyboard", "multitouch", "touching"], "video": ["video", "videos", "youtube", "watch", "watching", "music", "play", "camera"], "quality": ["quality", "build", "good", "sound", "picture", "screen", "high", "camera"], "price": ["price", "tablet", "great", "good", "priced", "prices", "worth", "range"]}
 },
 {
