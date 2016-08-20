@@ -1,5 +1,5 @@
 import unittest
-from scraper import main as scraper_main, createAmazonScraper, scrape_num_review_and_category
+from scraper import main as api_scraper, scrape_num_review_and_category
 from srs_local import *
 from srs import settings
 from sentiment_plot import box_plot
@@ -48,10 +48,10 @@ class TestSrsLocal(unittest.TestCase):
 
 		self.assertEqual(closest_registered_category, expected_closest_registered_category)
 
-	def test_get_registered_category(self):
+	def test_get_reviews_num_and_registered_category(self):
 
 		product_id = 'B00V49LL90'
-		registered_category = get_registered_category(product_id)
+		_, registered_category = get_reviews_num_and_registered_category(product_id)
 		expected_registered_category = ["Electronics", "Computers & Accessories","Tablets"]
 
 		self.assertEqual(registered_category, expected_registered_category)
@@ -61,15 +61,14 @@ class TestSrsLocal(unittest.TestCase):
 		# A searches a product id to 
 		# finds out srs first scrapes reviews for him
 		product_id = 'B00V49LL90'
-		amazonScraper = createAmazonScraper()
 		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = \
-		scraper_main(amazonScraper, product_id, [], [], scrape_time_limit=30)
+		api_scraper(product_id, [], [], scrape_time_limit=30)
 
 		self.assertTrue(len(prod_contents) > 0)
 		
 		# the srs helps to find out what registered category
 		# this product belongs to
-		registered_category = get_registered_category(product_id)
+		_, registered_category = get_reviews_num_and_registered_category(product_id)
 		expected_registered_category = ["Electronics", "Computers & Accessories", "Tablets"]
 
 		self.assertEqual(registered_category, expected_registered_category)
