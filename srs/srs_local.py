@@ -163,5 +163,18 @@ def main(product_id):
 	plot(product_id)
 
 if __name__ == '__main__':
-	product_id = 'B00HZE2PYI' # Samsung Galaxy Tab A 8-Inch Tablet
-	main(product_id)
+	product_id = 'B00V49LL90'
+	product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = \
+	api_scraper(product_id, [], [], scrape_time_limit=5)
+
+	_, registered_category = get_reviews_num_and_registered_category(product_id)
+
+	# A thought it would be nice to use word2vec to make a review summary
+	predictor_kernel = "Hybrid"
+	predictor = loadTrainedPredictor(predictor_kernel, registered_category)
+
+	prod_ft_score_dict, prod_ft_senIdx_dict = get_ft_dicts_from_contents(prod_contents, predictor)
+	plot_folder = settings['sentiment_plot']
+	figure_file_path = os.path.join(plot_folder, product_id + '_boxplot.png')
+	box_plot(prod_ft_score_dict, figure_file_path, product_id)
+
