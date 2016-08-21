@@ -7,6 +7,7 @@ import os
 from nltk.stem.porter import PorterStemmer
 from nltk.stem.snowball import SnowballStemmer
 from database import select_for_product_id
+import re
 
 def getSentencesFromReview(reviewContent):
     """
@@ -43,7 +44,8 @@ def tokenize(string, stem=True):
     INPUT: string
     OUTPUT: a list of words
     """
-    import re
+    string = string.replace("/", " ")
+    string = string.replace("-", " ")
     tokenizer = PottsTokenizer(preserve_case=False)
     token_list = tokenizer.tokenize(string)
     punctuation = re.compile(r'[-.?!,":;$/*()|0-9]') # remove these punctuations and number 
