@@ -51,7 +51,7 @@ class TestPredictorHelperFunctions(unittest.TestCase):
 	def testLoadTrainedPredictor(self):
 
 		predictorKernel = 'Word2Vec'
-		category = ["Electronics", "Computers & Accessories", "Tablets"]
+		category = ["Cell Phones & Accessories", "Cell Phones", "No-Contract Cell Phones"]
 		predictor = loadTrainedPredictor(predictorKernel, category)
 
 		# check type of predictor attributes
@@ -61,10 +61,10 @@ class TestPredictorHelperFunctions(unittest.TestCase):
 		
 		# check if using right wordlist for the specified category
 		wordlist_dict = predictor.wordlist_dict
-		self.assertIn('wifi', wordlist_dict)
+		self.assertIn('service', wordlist_dict)
+		self.assertIn('apps', wordlist_dict)
+		self.assertIn('plan', wordlist_dict)
 		self.assertIn('keyboard', wordlist_dict)
-		self.assertIn('touch', wordlist_dict)
-		self.assertIn('games', wordlist_dict)
 
 
 if __name__ == '__main__':

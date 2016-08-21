@@ -126,7 +126,7 @@ class Word2Vec_Predictor(Predictor):
 
 	def getWordlistDict(self, category):
 
-		self.wordlist_dict = getWordlistDictFromDB(category)
+		self.wordlist_dict, _ = getWordlistDictFromDB(category)
 
 	def load(self, model_filename, category):
 		model_file_path = getPredictorDataFilePath(model_filename)

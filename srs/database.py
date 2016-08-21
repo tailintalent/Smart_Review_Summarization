@@ -155,24 +155,6 @@ def select_ft_score():
 	disconnect_db(client)
 	return query_res
 
-def getWordlistDictFromDB2(category):
-
-	client, db = connect_to_db()
-	category_collection = db.category_collection
-	query_res = list(category_collection.find_one({"category": category}))
-	disconnect_db(client)
-
-	if len(query_res) < 1:
-		raise Exception('Category: {0} not found in database'.format(category))
-
-	result = query_res[0]
-	wordlistDictWithWeights = result['wordlist_dict']
-	wordlistDict = {}
-	for aspect in wordlistDictWithWeights:
-		wordlistDict[aspect] = [sublist[0] for sublist in wordlistDictWithWeights[aspect]]
-
-	return wordlistDict
-
 def getWordlistDictFromDB(category):
 
 	client, db = connect_to_db()
@@ -183,9 +165,12 @@ def getWordlistDictFromDB(category):
 	if len(query_res) < 1:
 		raise Exception('Category: {0} not found in database'.format(category))
 
-	wordlistDict = query_res['wordlist_dict']
+	wordlistDictWithWeights = query_res['wordlist_dict']
+	wordlistDict = {}
+	for aspect in wordlistDictWithWeights:
+		wordlistDict[aspect] = [sublist[0] for sublist in wordlistDictWithWeights[aspect]]
 
-	return wordlistDict
+	return wordlistDict, wordlistDictWithWeights
 
 def fillCategoryCollectionInDB(categoryFile):
 
