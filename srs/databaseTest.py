@@ -8,8 +8,8 @@ class TestCategoryCollection(unittest.TestCase):
 		registered_categories = get_all_unique_registered_categories()
 		registered_categories = sorted(registered_categories)
 		expected_registed_categories = [
+			["Cell Phones & Accessories", "Cell Phones", "No-Contract Cell Phones"],
 			["Electronics", "Camera & Photo", "Digital Cameras"],
-			["Electronics", "Computers & Accessories", "Tablets"]
 		]
 
 		self.assertEqual(registered_categories, expected_registed_categories)
