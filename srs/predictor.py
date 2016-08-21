@@ -188,6 +188,38 @@ class Word2Vec_svm_Predictor(Word2Vec_Predictor):
 
 		return np.array(predictions)
 
+class Hybrid_Predictor(Predictor):
+	"""
+	A class to predict static aspects for given sentences using maxEntropyModel
+	"""
+	def __init__(self):
+
+		self.wordlist_dict_with_weights = []
+
+	def getWordlistDict(self, category):
+
+		_, self.wordlist_dict_with_weights = getWordlistDictFromDB(category)
+
+	def load(self, model_filename, category):
+		model_file_path = getPredictorDataFilePath(model_filename)
+		self.model = word2vec.load(model_file_path)  #load word2vec model
+		self.getWordlistDict(category)
+
+	def train(self):
+		pass
+
+	def predict(self, sentence, threshold=0.85):
+		"""
+		INPUT: `Sentence` object: sentence
+		"""
+		from hybridModel import sentence_prediction
+		sentence_prediction(sentence,self.wordlist_dict_with_weights,self.model,threshold)
+
+	def predict_for_sentences(self, sentences, threshold=0.85):
+
+		for sentence in sentences:
+			self.predict(sentence, threshold)
+
 def getPredictorDataFilePath(filename):
 		
 	predictor_datafile_path = os.path.join(settings["predictor_data"], filename)
@@ -197,35 +229,35 @@ def getPredictorDataFilePath(filename):
 		raise Exception("{} is not found!".format(predictor_datafile_path))
 
 
-def loadTrainedPredictor(predictor_name, category):
+def loadTrainedPredictor(predictor_kernel, category):
 	
-	if predictor_name == 'MaxEntropy':
+	if predictor_kernel == 'MaxEntropy':
 		params_filename = 'lambda_opt_regu3.txt'
 		wordlist_filename = 'wordlist_dict_1.txt'
 		predictor = MaxEntropy_Predictor()
 		predictor.load(wordlist_filename, params_filename)
-	elif predictor_name == 'Word2Vec':
+	elif predictor_kernel == 'Word2Vec':
 		predictor = Word2Vec_Predictor()
 		predictor.load('text8.bin', category)
-
-	elif predictor_name == 'Word2Vec_svm':
+	elif predictor_kernel == 'Word2Vec_svm':
 		predictor = Word2Vec_svm_Predictor()
 		predictor.load('text8.bin','word2vec_dict.txt', 'w2v_svm/w2v_svm.pkl')
+	elif predictor_kernel == 'Hybrid':
+		predictor = Hybrid_Predictor()
+		predictor.load('text8.bin', category)
+
 	return predictor
 
 
 if __name__ == '__main__':
-	# main()
-	# create test sentences
-	static_traning_data_dir = settings["static_training_data"]
-
-	# sentences = loadTrainingData(static_traning_data_dir)
-	sentences = loadUsefulTrainingData(static_traning_data_dir)
 
 	# testing for Word2Vec predictor
-	p = loadTrainedPredictor('Word2Vec', 'Digital Cameras')	
+	category = ["Electronics", "Camera & Photo", "Digital Cameras"]
+	p = loadTrainedPredictor('Hybrid', category)	
 	
-	sentence = sentences[0]
+	sentence = Sentence('I find it easy to operate.')
+
 	print sentence.content
-	print p.predict(sentence)
+	p.predict(sentence)
+	print sentence.static_aspect
 	print sentence.labeled_aspects
