@@ -57,14 +57,14 @@ def simplify_string(string):
 
 	return string.lower().replace(" ", "")
 
-def fill_in_db(product_id, review_ratio_threshold = 0.8, scrape_time_limit = 30):	
+def fill_in_db(product_id, predictor_kernel='Hybrid', review_ratio_threshold = 0.8, scrape_time_limit = 30):	
 	# fetch product info from db
 	query_res = select_for_product_id(product_id)
 
 	if len(query_res) == 0: # not in db yet
 		print "{0} NOT exists in db, now scraping reviews...".format(product_id)
 		# scrape product info and review contents:
-		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = api_scraper(amazonScraper, product_id, [], [], scrape_time_limit)
+		product_name, prod_contents, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = api_scraper(product_id, [], [], scrape_time_limit)
 		
 		if len(prod_contents) <= 0:
 			print "Do not find reviews for %s" % product_id
@@ -111,7 +111,7 @@ def fill_in_db(product_id, review_ratio_threshold = 0.8, scrape_time_limit = 30)
 			if not prod_scraped_pages:
 				prod_scraped_pages = []
 			_, prod_contents_new, prod_review_ids, prod_ratings, review_ending_sentence, scraped_pages_new = \
-			api_scraper(amazonScraper, product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit)		
+			api_scraper(product_id, prod_review_ids_db, prod_scraped_pages, scrape_time_limit)		
 
 			# classify, get sentiment score
 			if len(prod_contents_new) > 0:			
