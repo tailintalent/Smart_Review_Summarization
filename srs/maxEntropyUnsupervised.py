@@ -1,26 +1,12 @@
-from nltk.tokenize import sent_tokenize, word_tokenize
 import numpy as np
 import operator
 from srs import settings
-from utilities import loadUsefulTrainingData, loadScraperDataFromDB, Sentence,AspectPattern
+from utilities import tokenize, loadUsefulTrainingData, loadScraperDataFromDB, Sentence, AspectPattern
 import json
 import os
 import re
 import copy
 import word2vec
-
-def tokenize_special(sentence):
-	token_list = [] # create empty token list 
-
-    # process sentence to a list of word without punctuation and number
-	sentence_string = sentence.content.replace("-", " ")
-	sentence_string = sentence_string.replace("/", " ")
-	token_list = word_tokenize(sentence_string)
-	punctuation = re.compile(r'[-.?!,":;()|0-9]') # remove these punctuations and number 
-	token_list = [punctuation.sub("", word) for word in token_list]  
-	token_list = filter(None, token_list) #filters empty 
-	#no stemming currently, but can be easily added
-	sentence.tokens = token_list
 
 def eval_f_vec(sentence,wordlist_dict):
     """
@@ -30,10 +16,10 @@ def eval_f_vec(sentence,wordlist_dict):
     #tokenize the sentence if not already
     if not sentence.tokens:
     	# not tokenize before 
-    	tokenize_special(sentence)
-
-    token_list = sentence.tokens
-
+    	token_list = tokenize(sentence.content, stem=False)
+    	sentence.tokens = token_list
+    else:
+		token_list = sentence.tokens
     len_word = max(len(token_list),1)*1.0;
     f_vec = copy.deepcopy(wordlist_dict) #speed up by putting copy and reset outside
     #reset to zero 
@@ -101,7 +87,6 @@ def word2vec_predict(sentence,wordlist_dict,w2v_model):
 def eval_s_vec(sentence,wordlist_dict,w2v_model):
 	token_list_full = sentence.tokens
 	token_list = distill_token(token_list_full)
-	print token_list
 	# create cosine similarity matrix
 	s_vec = copy.deepcopy(wordlist_dict) #speed up by putting copy and reset outside
 	#reset to zero 
@@ -157,8 +142,10 @@ if __name__ == '__main__':
 	model_file_path = getPredictorDataFilePath(model_filename)
 	w2v_model = word2vec.load(model_file_path)  #load word2vec model
 
+	#begin testing
+	# sentence = sentences[122] # change index for different sentences 
+	sentence = Sentence('I find it easy to operate.')
 
-	sentence = sentences[122]
 	print sentence.content
 	sentence_prediction(sentence,wordlist_dict,w2v_model,0.85)
 	print sentence.static_aspect
