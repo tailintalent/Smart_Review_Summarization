@@ -1,0 +1,15 @@
+[
+"year","month","day","minute","second",\
+"need","want","love","talk","use","bought","work","works","recommend","think","found","buying",\
+"send","return","put",\
+"problem","problems","thing","part","dvd's","product","thief","thieves",\
+"everything","something","someone","anyone","somebody","anybody","nobody","somewhere","sometime",\
+"kids","daughter","son","dad","mom",\
+"iphone","ipad","android","samsung","acer","amazon","verizon","virgin","sony","att",\
+"nexus","google","netflix","canon","nikon","asus","nex","olympus",\
+"dslr","slr",\
+"people","money","way","time","item","trip","job","home","lot","seller","issue","road",\
+"optimus","fine","right","excellent","cheap","longer","fast","slow","smooth",\
+"europe","italy","uk","china","us","america","france","britain",\
+"pc","hz","lg","amp","hz","volt","mm","cm","km","kg","lb","gf"
+]
