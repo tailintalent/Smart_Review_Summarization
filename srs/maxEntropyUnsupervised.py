@@ -2,30 +2,37 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import numpy as np
 import operator
 from srs import settings
-from utilities import loadUsefulTrainingData, loadScraperDataFromDB, Sentence
+from utilities import loadUsefulTrainingData, loadScraperDataFromDB, Sentence,AspectPattern
 import json
 import os
 import re
 import copy
+import word2vec
+
+def tokenize_special(sentence):
+	token_list = [] # create empty token list 
+
+    # process sentence to a list of word without punctuation and number
+	sentence_string = sentence.content.replace("-", " ")
+	sentence_string = sentence_string.replace("/", " ")
+	token_list = word_tokenize(sentence_string)
+	punctuation = re.compile(r'[-.?!,":;()|0-9]') # remove these punctuations and number 
+	token_list = [punctuation.sub("", word) for word in token_list]  
+	token_list = filter(None, token_list) #filters empty 
+	#no stemming currently, but can be easily added
+	sentence.tokens = token_list
 
 def eval_f_vec(sentence,wordlist_dict):
     """
     sentence: a single labelled sentence obj 
     returns a vector of length len(wordlist_dict)
     """
-    token_list = [] #word list of the sentence
-    if sentence.tokens != []:
-        token_list = sentence.tokens
-    else:
-        # process sentence to a list of word without punctuation and number
-        sentence_string = sentence.content.replace("-", " ")
-        sentence_string = sentence_string.replace("/", " ")
-        token_list = word_tokenize(sentence_string)
-        punctuation = re.compile(r'[-.?!,":;()|0-9]') # remove these punctuations and number 
-        token_list = [punctuation.sub("", word) for word in token_list]  
-        token_list = filter(None, token_list) #filters empty 
-        #no stemming currently, but can be easily added
-        sentence.tokens = token_list
+    #tokenize the sentence if not already
+    if not sentence.tokens:
+    	# not tokenize before 
+    	tokenize_special(sentence)
+
+    token_list = sentence.tokens
 
     len_word = max(len(token_list),1)*1.0;
     f_vec = copy.deepcopy(wordlist_dict) #speed up by putting copy and reset outside
@@ -34,7 +41,6 @@ def eval_f_vec(sentence,wordlist_dict):
     	for i in range(len(f_vec[key])):
     		f_vec[key][i][1]=0
 
-    # static_aspect_list = sorted(wordlist_dict.keys())
     for key in wordlist_dict.keys():
         for i in range(len(wordlist_dict[key])):
             count = token_list.count(wordlist_dict[key][i][0])
@@ -58,7 +64,7 @@ def cond_prob(f_vec,wordlist_dict):
 	print score_dict
 	return score_dict
 
-def sentence_prediction(sentence,wordlist_dict,thres):
+def sentence_prediction(sentence,wordlist_dict,w2v_model,thres):
 	'''
 	predict aspect based on the score_dict. The default is the maximum
 	'''
@@ -66,11 +72,74 @@ def sentence_prediction(sentence,wordlist_dict,thres):
 	score_dict = cond_prob(f_vec,wordlist_dict)
 	# print f_vec
 	predicted_aspect = max(score_dict.iteritems(), key=operator.itemgetter(1))[0]
-	if score_dict[predicted_aspect] == 1:
+	if score_dict[predicted_aspect] == 1: # no key word overlap
 		#call word2vec similarity 
-		predicted_aspect = 'no feature'
+		score_dict_w2v = word2vec_predict(sentence,wordlist_dict,w2v_model)
+		predicted_aspect = max(score_dict_w2v.iteritems(), key=operator.itemgetter(1))[0]
+		if score_dict_w2v[predicted_aspect] < thres:
+			predicted_aspect = 'no feature'
 
 	sentence.static_aspect = predicted_aspect
+
+def word2vec_predict(sentence,wordlist_dict,w2v_model):
+	s_vec = eval_s_vec(sentence,wordlist_dict,w2v_model)
+	#post process to return an aspect of most similar
+	score_dict_w2v = dict.fromkeys(s_vec, 0)
+	# 1. get the maximum of each seed without weight (weight doesn't do well)
+	for key in s_vec.keys():
+		dot_product = 0.0
+		similarity_wt_max = 0
+		for i in range(len(wordlist_dict[key])):
+			similarity_wt = s_vec[key][i][1]
+			if similarity_wt > similarity_wt_max:
+				similarity_wt_max = similarity_wt
+		score_dict_w2v[key] = similarity_wt_max 
+
+	print score_dict_w2v
+	return score_dict_w2v
+
+def eval_s_vec(sentence,wordlist_dict,w2v_model):
+	token_list_full = sentence.tokens
+	token_list = distill_token(token_list_full)
+	print token_list
+	# create cosine similarity matrix
+	s_vec = copy.deepcopy(wordlist_dict) #speed up by putting copy and reset outside
+	#reset to zero 
+	for key in s_vec.keys():
+		for i in range(len(s_vec[key])):
+			s_vec[key][i][1]=0
+
+	for key in wordlist_dict.keys():
+	    for i in range(len(wordlist_dict[key])):
+	    	v_seed = w2v_model[wordlist_dict[key][i][0]]
+	    	similarity = []
+	    	for token in token_list:
+	    		if token in w2v_model:
+	    			v_token = w2v_model[token]
+	    			# similarity.append(np.linalg.norm(v_token-v_seed))
+	    			similarity.append(np.dot(v_token,v_seed))
+	    		else: 
+	    			similarity.append(0)
+	    	max_idx = similarity.index(max(similarity))
+	    	# print (token_list[max_idx],wordlist_dict[key][i][0],similarity[max_idx])
+	    	s_vec[key][i][1] = max(similarity)
+
+	return s_vec
+
+def distill_token(token_list):
+
+	from nltk.corpus import stopwords
+	token_list_distill = [word for word in token_list if word not in stopwords.words('english')]
+
+	return token_list_distill
+
+def getPredictorDataFilePath(filename):
+		
+	predictor_datafile_path = os.path.join(settings["predictor_data"], filename)
+	if os.path.exists(predictor_datafile_path):
+		return predictor_datafile_path
+	else:
+		raise Exception("{} is not found!".format(predictor_datafile_path))
 
 
 if __name__ == '__main__':
@@ -83,13 +152,16 @@ if __name__ == '__main__':
 	wordlist_dict_path = os.path.join(settings["predictor_data"], 'wordlist_dict_camera_wt.txt')
 	wordlist_dict = json.load(open(wordlist_dict_path, 'r'))
 
-	sentence = sentences[20]
+	# load word2vec model
+	model_filename = 'text8.bin'
+	model_file_path = getPredictorDataFilePath(model_filename)
+	w2v_model = word2vec.load(model_file_path)  #load word2vec model
+
+
+	sentence = sentences[122]
 	print sentence.content
-	sentence_prediction(sentence,wordlist_dict,1)
+	sentence_prediction(sentence,wordlist_dict,w2v_model,0.85)
 	print sentence.static_aspect
 	print sentence.labeled_aspects
-
-
-
 
 
