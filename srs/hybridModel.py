@@ -44,7 +44,7 @@ def cond_prob(f_vec,wordlist_dict,const_wt=False):
 
 		score_dict[key] = dot_product/len(wordlist_dict[key]) # min score is 1
 
-	print score_dict
+	# print score_dict
 	return score_dict
 
 def sentence_prediction(sentence,wordlist_dict,w2v_model,thres):
@@ -92,7 +92,7 @@ def word2vec_predict(token_list,wordlist_dict,w2v_model):
 				similarity_wt_max = similarity_wt
 		score_dict_w2v[key] = similarity_wt_max 
 
-	print score_dict_w2v
+	# print score_dict_w2v
 	return score_dict_w2v
 
 def eval_s_vec(token_list,wordlist_dict,w2v_model):
@@ -138,7 +138,6 @@ def createTokenDefinition(token_list):
 			def_string = def_adj[0].definition()
 
 		token_list_expand = token_list_expand + tokenize(def_string,stem=False,entire=False)#entire => larger set of stopword
-	print token_list_expand
 	return token_list_expand
 
 if __name__ == '__main__':
@@ -158,11 +157,11 @@ if __name__ == '__main__':
 
 	#begin testing
 	# sentence = sentences[122] # change index for different sentences 
-	# sentence = Sentence('I find it easy to operate.')
+	content = "I find it easy to operate."
 	# content = "Obviously, if you're a serious photographer, this is not the camera for you, but for me, it's great."
 	# content = 'After several hours of use, the flickering seemed to mostly go away, but not entirely.' #success
 	# content = "I know it's a lot to ask from an entry-level camera, but even for basic use I am not comfortable with a camera that seems to miss 2 out of every 3 shots." #success
-	content = "I found the menu to be clunky, and many basic features like shutter and aperture settings, manual focus (or at least a user-selected Macro mode) were either lacking entirely or buried in some menu that I couldn't find when I needed it"
+	# content = "I found the menu to be clunky, and many basic features like shutter and aperture settings, manual focus (or at least a user-selected Macro mode) were either lacking entirely or buried in some menu that I couldn't find when I needed it"
 	sentence = Sentence(content)
 	print sentence.content
 	sentence_prediction(sentence,wordlist_dict,w2v_model,0.85)
