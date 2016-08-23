@@ -139,7 +139,7 @@ def createTokenDefinition(token_list):
 		elif len(def_adj) > 0: 
 			def_string = def_adj[0].definition()
 		else: 
-			def_string = []
+			def_string = ""
 
 		token_list_expand = token_list_expand + tokenize(def_string,stem=False,entire=False)#entire => larger set of stopword
 	return token_list_expand
@@ -150,7 +150,7 @@ if __name__ == '__main__':
 	# sentences = loadTrainingData(static_traning_data_dir)
 	sentences = loadUsefulTrainingData(static_traning_data_dir)
 
-	# load wordlist dictionary from Tailin
+	# load wordlist dictionary txt from Tailin
 	wordlist_dict_path = os.path.join(settings["predictor_data"], 'wordlist_dict_camera_wt.txt')
 	wordlist_dict = json.load(open(wordlist_dict_path, 'r'))
 
@@ -162,11 +162,11 @@ if __name__ == '__main__':
 	#begin testing
 	# sentence = sentences[122] # change index for different sentences 
 	# content = "I find it easy to operate."
-	# content = "Obviously, if you're a serious photographer, this is not the camera for you, but for me, it's great."
+	content = "Obviously, if you're a serious photographer, this is not the camera for you, but for me, it's great."
 	# content = 'After several hours of use, the flickering seemed to mostly go away, but not entirely.' #success
 	# content = "I know it's a lot to ask from an entry-level camera, but even for basic use I am not comfortable with a camera that seems to miss 2 out of every 3 shots." #success
 	# content = "I found the menu to be clunky, and many basic features like shutter and aperture settings, manual focus (or at least a user-selected Macro mode) were either lacking entirely or buried in some menu that I couldn't find when I needed it"
-	content = ''
+	# content = ''
 	sentence = Sentence(content)
 	print sentence.content
 	sentence_prediction(sentence,wordlist_dict,w2v_model,0.85)
