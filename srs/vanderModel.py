@@ -12,7 +12,6 @@ def get_sentiment_score(ls):
         # sample output of vs: {'neg': 0.736, 'neu': 0.264, 'pos': 0.0, 'compound': -0.4199}
         ls.score = vs['pos']-vs['neg']
     except Exception, e:
-        raise e
         print 'bypassed an encoding error'
         ls.score = 0;
 
