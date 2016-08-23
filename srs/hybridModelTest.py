@@ -17,6 +17,21 @@ class TestHybridModel(unittest.TestCase):
         sentence_prediction(sentence,self.wordlist_dict,self.w2v_model,0.85)
         self.assertEqual(sentence.static_aspect,'no feature')
 
+    def test_general_case(self):
+        aspect=[k for k in self.wordlist_dict.keys()]
+        aspect.append('no feature')
+
+        content_list = ["I find it easy to operate.",
+                        "Obviously, if you're a serious photographer, this is not the camera for you, but for me, it's great.",
+                        "After several hours of use, the flickering seemed to mostly go away, but not entirely"]
+        test_result = True
+        for c in content_list:
+            sentence = Sentence(c)
+            sentence_prediction(sentence,self.wordlist_dict,self.w2v_model,0.85)
+            if sentence.static_aspect not in aspect:
+                test_result = False 
+
+        self.assertTrue(test_result)
 
 if __name__ == '__main__':
     unittest.main()
