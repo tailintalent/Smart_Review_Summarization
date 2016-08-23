@@ -114,9 +114,11 @@ def eval_s_vec(token_list,wordlist_dict,w2v_model):
 	    			similarity.append(np.dot(v_token,v_seed))
 	    		else: 
 	    			similarity.append(0)
-	    	max_idx = similarity.index(max(similarity))
-	    	# print (token_list[max_idx],wordlist_dict[key][i][0],similarity[max_idx])
-	    	s_vec[key][i][1] = max(similarity)
+	    	if similarity:
+	    		# execute if similarity is not empty
+		    	max_idx = similarity.index(max(similarity))
+		    	# print (token_list[max_idx],wordlist_dict[key][i][0],similarity[max_idx])
+		    	s_vec[key][i][1] = max(similarity)
 
 	return s_vec
 
@@ -136,6 +138,8 @@ def createTokenDefinition(token_list):
 			def_string = def_noun[0].definition()
 		elif len(def_adj) > 0: 
 			def_string = def_adj[0].definition()
+		else: 
+			def_string = []
 
 		token_list_expand = token_list_expand + tokenize(def_string,stem=False,entire=False)#entire => larger set of stopword
 	return token_list_expand
@@ -157,11 +161,12 @@ if __name__ == '__main__':
 
 	#begin testing
 	# sentence = sentences[122] # change index for different sentences 
-	content = "I find it easy to operate."
+	# content = "I find it easy to operate."
 	# content = "Obviously, if you're a serious photographer, this is not the camera for you, but for me, it's great."
 	# content = 'After several hours of use, the flickering seemed to mostly go away, but not entirely.' #success
 	# content = "I know it's a lot to ask from an entry-level camera, but even for basic use I am not comfortable with a camera that seems to miss 2 out of every 3 shots." #success
 	# content = "I found the menu to be clunky, and many basic features like shutter and aperture settings, manual focus (or at least a user-selected Macro mode) were either lacking entirely or buried in some menu that I couldn't find when I needed it"
+	content = ''
 	sentence = Sentence(content)
 	print sentence.content
 	sentence_prediction(sentence,wordlist_dict,w2v_model,0.85)
