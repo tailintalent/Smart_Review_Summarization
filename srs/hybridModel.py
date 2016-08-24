@@ -63,18 +63,14 @@ def sentence_prediction(sentence,wordlist_dict,w2v_model,thres):
 	score_dict = cond_prob(f_vec,wordlist_dict)
 	# print f_vec
 	predicted_aspect = max(score_dict.iteritems(), key=operator.itemgetter(1))[0]
-	if score_dict[predicted_aspect] == 1: # no key word overlap
+	if score_dict[predicted_aspect] <= 1.05: # no key word overlap
 		# get another list of token from definition
 		token_list_expand = createTokenDefinition(token_list)
 		f_vec_expand = eval_f_vec(token_list_expand,wordlist_dict)
 		score_dict_expand = cond_prob(f_vec_expand,wordlist_dict,const_wt=True) 
 		predicted_aspect = max(score_dict_expand.iteritems(), key=operator.itemgetter(1))[0]
-		if score_dict_expand[predicted_aspect] == 1:
-			#call word2vec similarity 
-			score_dict_w2v = word2vec_predict(token_list_expand,wordlist_dict,w2v_model)
-			predicted_aspect = max(score_dict_w2v.iteritems(), key=operator.itemgetter(1))[0]
-			if score_dict_w2v[predicted_aspect] < thres:
-				predicted_aspect = 'no feature'
+		if score_dict_expand[predicted_aspect] <= 2:
+			predicted_aspect = 'no feature'
 
 	sentence.static_aspect = predicted_aspect
 
