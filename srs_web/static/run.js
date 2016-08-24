@@ -118,9 +118,17 @@ $("#input_form").submit(function(e){
             async: true,
             success: function(data){
                 // alert("Your summarization for " + data + " is ready!");
-                // run job
+                // run job (see srs_web.py scrape_reviews for code name)
                 id = data;
-                if (id=="1"){
+                if(id=="0"){
+                    $("#input1_alert").text("Product category currently not supported"); 
+                    $("#input2_alert").text("");
+                }
+                else if (id=="00"){
+                    $("#input1_alert").text("Product category currently not supported"); 
+                    $("#input2_alert").text("Product category currently not supported");
+                }
+                else if (id=="1"){
                     $("#input1_alert").text("Unable to retrieve review from Amazon"); 
                     $("#input2_alert").text("");
                 }else if (id=="2") {
@@ -129,10 +137,18 @@ $("#input_form").submit(function(e){
                 }else if (id=="12"){
                     $("#input1_alert").text("Unable to retrieve review from Amazon"); 
                     $("#input2_alert").text("Unable to retrieve review from Amazon"); 
-                }else{
+                }else if (id=="10"){
+                    $("#input1_alert").text("Unable to retrieve review from Amazon");
+                    $("#input2_alert").text("Product category currently not supported");
+
+                }else if(id=="02"){
+                    $("#input1_alert").text("Product category currently not supported");
+                    $("#input2_alert").text("Unable to retrieve review from Amazon");
+                }
+                else{
                     renderResult(id);
                     $("#input1_alert").text("");
-                    $("#input1_alert").text("");
+                    $("#input2_alert").text("");
                 }
                 // $("#loader-wrapper").hide();
                 animEl = document.querySelector('.la-anim-5');

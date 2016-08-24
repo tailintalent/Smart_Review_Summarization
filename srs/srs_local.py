@@ -146,18 +146,18 @@ def fill_in_db(product_id, predictor_kernel='Hybrid', review_ratio_threshold = 0
 
 		else:
 			print "Got Enough Reviews in db"
-			if len(prod_ft_score_dict) == 0 or len(prod_ft_senIdx_dict) == 0:
+			# if len(prod_ft_score_dict) == 0 or len(prod_ft_senIdx_dict) == 0:
 				# classify, sentiment score
-				predictor = loadTrainedPredictor(predictor_kernel, registered_category)
-				prod_ft_score_dict, prod_ft_senIdx_dict = \
-				get_ft_dicts_from_contents(prod_contents, predictor)
-				
-				# update old entry
-				update_score_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
+			predictor = loadTrainedPredictor(predictor_kernel, registered_category)
+			prod_ft_score_dict, prod_ft_senIdx_dict = \
+			get_ft_dicts_from_contents(prod_contents, predictor)
+			
+			# update old entry
+			update_score_for_product_id(product_id, prod_ft_score_dict, prod_ft_senIdx_dict)
 
-				return True
-			else:
-				return True
+			return True
+			# else:
+			# 	return True
 	
 	
 def plot(product_id):

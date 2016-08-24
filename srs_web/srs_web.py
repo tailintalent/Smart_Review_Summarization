@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request, redirect, render_template, send_file
 from srs.sentiment_plot import sentimentBoxPlot, sentimentBoxPlot_Compare
-from srs.srs_local import fill_in_db
+from srs.srs_local import fill_in_db, get_reviews_num_and_registered_category
 from srs.utilities import loadScraperDataFromDB
 from srs.scraper import createAmazonScraper
 from srs.scraper import scrape_reviews_hard
@@ -40,25 +40,51 @@ def scrape_reviews():
 		else: 
 			product_id2 = user_input2
 
-		if not product_id2:		
+		# the case that both id1 and id2 are empty were checked
+
+		if not product_id2:	# one product case
 			print 'product_id is ' + product_id			
-			db_status = fill_in_db(product_id)
-			if db_status == True:
-				return str(product_id)
+			_ , prod_cat =get_reviews_num_and_registered_category(product_id)
+			if len(prod_cat)==0: #empty case
+				return "0" # code name for not having category in the db 
 			else: 
-				return "1"
-		else:
+				db_status = fill_in_db(product_id)
+				if db_status == True:
+					return str(product_id)
+				else: 
+					return "1" # code name for unable to retrieve product 1 review from Amazon
+		
+		else: # two product case 
 			print 'product_id are ' + product_id	+ ' and '+ product_id2
-			db_status = fill_in_db(product_id,scrape_time_limit=20)
-			db_status2 = fill_in_db(product_id2,scrape_time_limit=20)
-			if db_status==True and db_status2==True:
-				return str(product_id) + "&" + str(product_id2)
-			elif db_status==False and db_status2==True:
-				return "1"
-			elif db_status==True and db_status2==False:
-				return "2"
-			else: 
-				return "12"
+			_ ,prod_cat = get_reviews_num_and_registered_category(product_id)
+			_ ,prod2_cat = get_reviews_num_and_registered_category(product_id2)
+
+			if len(prod_cat)==0 and len(prod2_cat)==0: 
+				return "00" #both products are valid but are not in db category
+			if len(prod2_cat)==0 and len(prod_cat)>0: # 2 is empty, but 1 is not 
+				db_status = fill_in_db(product_id,scrape_time_limit=20)
+				if db_status == True:
+					return str(product_id)
+				else: 
+					return "10" # code name for unable to retrieve product 1 review from Amazon
+			if len(prod_cat)==0 and len(prod2_cat)>0: # 1 is empty, but 2 is not  
+				db_status = fill_in_db(product_id2,scrape_time_limit=20)
+				if db_status == True:
+					return str(product_id2)
+				else: 
+					return "02" # code name for unable to retrieve product 1 review from Amazon
+			if len(prod_cat)>=0 and len(prod2_cat)>0:
+				# both product in cat 
+				db_status = fill_in_db(product_id,scrape_time_limit=20)
+				db_status2 = fill_in_db(product_id2,scrape_time_limit=20)
+				if db_status==True and db_status2==True:
+					return str(product_id) + "&" + str(product_id2)
+				elif db_status==False and db_status2==True:
+					return "1"
+				elif db_status==True and db_status2==False:
+					return "2"
+				else: 
+					return "12"
 	else:
 		return render_template('home.html')
 
