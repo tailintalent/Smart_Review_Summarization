@@ -41,7 +41,7 @@ def get_closest_registered_category(scraped_category, registered_categories):
 	# if best matched category still not matching first two levels of scraped_category
 	# let user know srs is not ready for that
 	if best_matched_layer[0] < 1 or best_matched_layer[0] < 1:
-		return None
+		return []
 	else:
 		return list(sorted_registeredCategory_matchedLayer_list[0][0])
 
