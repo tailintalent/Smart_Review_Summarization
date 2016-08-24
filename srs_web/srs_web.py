@@ -45,7 +45,7 @@ def scrape_reviews():
 		if not product_id2:	# one product case
 			print 'product_id is ' + product_id			
 			_ , prod_cat =get_reviews_num_and_registered_category(product_id)
-			if not prod_cat: #empty case
+			if len(prod_cat)==0: #empty case
 				return "0" # code name for not having category in the db 
 			else: 
 				db_status = fill_in_db(product_id)
@@ -58,21 +58,22 @@ def scrape_reviews():
 			print 'product_id are ' + product_id	+ ' and '+ product_id2
 			_ ,prod_cat = get_reviews_num_and_registered_category(product_id)
 			_ ,prod2_cat = get_reviews_num_and_registered_category(product_id2)
-			if not prod_cat and not prod2_cat: 
+
+			if len(prod_cat)==0 and len(prod2_cat)==0: 
 				return "00" #both products are valid but are not in db category
-			if not prod2_cat and prod_cat: # 2 is empty, but 1 is not 
+			if len(prod2_cat)==0 and len(prod_cat)>0: # 2 is empty, but 1 is not 
 				db_status = fill_in_db(product_id,scrape_time_limit=20)
 				if db_status == True:
 					return str(product_id)
 				else: 
-					return "1" # code name for unable to retrieve product 1 review from Amazon
-			if not prod_cat and prod2_cat: # 1 is empty, but 2 is not  
+					return "10" # code name for unable to retrieve product 1 review from Amazon
+			if len(prod_cat)==0 and len(prod2_cat)>0: # 1 is empty, but 2 is not  
 				db_status = fill_in_db(product_id2,scrape_time_limit=20)
 				if db_status == True:
 					return str(product_id2)
 				else: 
-					return "2" # code name for unable to retrieve product 1 review from Amazon
-			if prod_cat and prod2_cat:
+					return "02" # code name for unable to retrieve product 1 review from Amazon
+			if len(prod_cat)>=0 and len(prod2_cat)>0:
 				# both product in cat 
 				db_status = fill_in_db(product_id,scrape_time_limit=20)
 				db_status2 = fill_in_db(product_id2,scrape_time_limit=20)
