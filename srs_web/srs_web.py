@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request, redirect, render_template, send_file
 from srs.sentiment_plot import sentimentBoxPlot, sentimentBoxPlot_Compare
-from srs.srs_local import fill_in_db
+from srs.srs_local import fill_in_db, get_reviews_num_and_registered_category
 from srs.utilities import loadScraperDataFromDB
 from srs.scraper import createAmazonScraper
 from srs.scraper import scrape_reviews_hard
@@ -44,7 +44,7 @@ def scrape_reviews():
 
 		if not product_id2:	# one product case
 			print 'product_id is ' + product_id			
-			, prod_cat =get_reviews_num_and_registered_category(product_id)
+			_ , prod_cat =get_reviews_num_and_registered_category(product_id)
 			if not prod_cat: #empty case
 				return "0" # code name for not having category in the db 
 			else: 
@@ -56,8 +56,8 @@ def scrape_reviews():
 		
 		else: # two product case 
 			print 'product_id are ' + product_id	+ ' and '+ product_id2
-			,prod_cat = get_reviews_num_and_registered_category(product_id)
-			,prod2_cat = get_reviews_num_and_registered_category(product_id2)
+			_ ,prod_cat = get_reviews_num_and_registered_category(product_id)
+			_ ,prod2_cat = get_reviews_num_and_registered_category(product_id2)
 			if not prod_cat and not prod2_cat: 
 				return "00" #both products are valid but are not in db category
 			if not prod2_cat and prod_cat: # 2 is empty, but 1 is not 
