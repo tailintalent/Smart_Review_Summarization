@@ -1,15 +1,20 @@
 [
-"year","month","day","minute","second",\
-"need","want","love","talk","use","bought","work","works","recommend","think","found","buying",\
+"nice","good","great","easy","bad","little","new","well","like",'get','really', 'items', 'also', 'buy',\
+'accessories','could','received',"better","best","first","much","large","small","still","favorate","able",\
+"whole","last","happy","false","different",\
+"several","many","since","another","even","back",\
+"year","years","month","months","day","days","minute","minutes","second","seconds","Chrstmas",\
+"need","make","made","go","going","want","love","talk","use","bought","work","works","recommend","think","found","buying","try","tried","trying","loves","love",\
 "send","return","put",\
-"problem","problems","thing","part","dvd's","product","thief","thieves",\
+"problem","problems","thing","part","dvd's","product","thief","thieves","one","two","three","four","five","ten","hundred","thousand","million",\
 "everything","something","someone","anyone","somebody","anybody","nobody","somewhere","sometime",\
-"kids","daughter","son","dad","mom",\
+"kid","kids","daughter","son","dad","mom","husband","wife","grandpa","grandma","grandfather","grandmother","cousin","cousins","sister","sisters","brother","brothers",\
 "iphone","ipad","android","samsung","acer","amazon","verizon","virgin","sony","att",\
-"nexus","google","netflix","canon","nikon","asus","nex","olympus",\
+"nexus","google","netflix","canon","nikon","asus","nex","olympus","kindle",\
 "dslr","slr",\
 "people","money","way","time","item","trip","job","home","lot","seller","issue","road",\
 "optimus","fine","right","excellent","cheap","longer","fast","slow","smooth",\
 "europe","italy","uk","china","us","america","france","britain",\
-"pc","hz","lg","amp","hz","volt","mm","cm","km","kg","lb","gf"
+"pc","hz","lg","amp","hz","volt","mm","cm","km","kg","lb","gf","aaa",\
+"nfl","nba"
 ]

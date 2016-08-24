@@ -1,0 +1,4 @@
+{
+	17: {"apply_all": 1,"word_list":["good","bad"]},
+	18: {"apply_all": 0,"price": ["wrong","bad"]}
+}
