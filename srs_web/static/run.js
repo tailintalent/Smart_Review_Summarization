@@ -118,9 +118,17 @@ $("#input_form").submit(function(e){
             async: true,
             success: function(data){
                 // alert("Your summarization for " + data + " is ready!");
-                // run job
+                // run job (see srs_web.py scrape_reviews for code name)
                 id = data;
-                if (id=="1"){
+                if(id=="0"){
+                    $("#input1_alert").text("Product category currently not supported"); 
+                    $("#input2_alert").text("");
+                }
+                else if (id="00"){
+                    $("#input1_alert").text("Product category currently not supported"); 
+                    $("#input2_alert").text("Product category currently not supported");
+                }
+                else if (id=="1"){
                     $("#input1_alert").text("Unable to retrieve review from Amazon"); 
                     $("#input2_alert").text("");
                 }else if (id=="2") {
