@@ -293,7 +293,7 @@ def scrape_num_review_and_category(productID, max_scrape_loop = 2, current_loop=
 
             XPATH_CATEGORY = '//a[@class="a-link-normal a-color-tertiary"]//text()'
             RAW_CATEGORY = doc.xpath(XPATH_CATEGORY)
-            category = [i.strip() for i in RAW_CATEGORY] if RAW_CATEGORY else None
+            category = [i.strip() for i in RAW_CATEGORY] if RAW_CATEGORY else []
             
             return num_review, category
         except: 
