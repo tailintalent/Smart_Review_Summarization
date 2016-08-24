@@ -40,25 +40,50 @@ def scrape_reviews():
 		else: 
 			product_id2 = user_input2
 
-		if not product_id2:		
+		# the case that both id1 and id2 are empty were checked
+
+		if not product_id2:	# one product case
 			print 'product_id is ' + product_id			
-			db_status = fill_in_db(product_id)
-			if db_status == True:
-				return str(product_id)
+			, prod_cat =get_reviews_num_and_registered_category(product_id)
+			if not prod_cat: #empty case
+				return "0" # code name for not having category in the db 
 			else: 
-				return "1"
-		else:
+				db_status = fill_in_db(product_id)
+				if db_status == True:
+					return str(product_id)
+				else: 
+					return "1" # code name for unable to retrieve product 1 review from Amazon
+		
+		else: # two product case 
 			print 'product_id are ' + product_id	+ ' and '+ product_id2
-			db_status = fill_in_db(product_id,scrape_time_limit=20)
-			db_status2 = fill_in_db(product_id2,scrape_time_limit=20)
-			if db_status==True and db_status2==True:
-				return str(product_id) + "&" + str(product_id2)
-			elif db_status==False and db_status2==True:
-				return "1"
-			elif db_status==True and db_status2==False:
-				return "2"
-			else: 
-				return "12"
+			,prod_cat = get_reviews_num_and_registered_category(product_id)
+			,prod2_cat = get_reviews_num_and_registered_category(product_id2)
+			if not prod_cat and not prod2_cat: 
+				return "00" #both products are valid but are not in db category
+			if not prod2_cat and prod_cat: # 2 is empty, but 1 is not 
+				db_status = fill_in_db(product_id,scrape_time_limit=20)
+				if db_status == True:
+					return str(product_id)
+				else: 
+					return "1" # code name for unable to retrieve product 1 review from Amazon
+			if not prod_cat and prod2_cat: # 1 is empty, but 2 is not  
+				db_status = fill_in_db(product_id2,scrape_time_limit=20)
+				if db_status == True:
+					return str(product_id2)
+				else: 
+					return "2" # code name for unable to retrieve product 1 review from Amazon
+			if prod_cat and prod2_cat:
+				# both product in cat 
+				db_status = fill_in_db(product_id,scrape_time_limit=20)
+				db_status2 = fill_in_db(product_id2,scrape_time_limit=20)
+				if db_status==True and db_status2==True:
+					return str(product_id) + "&" + str(product_id2)
+				elif db_status==False and db_status2==True:
+					return "1"
+				elif db_status==True and db_status2==False:
+					return "2"
+				else: 
+					return "12"
 	else:
 		return render_template('home.html')
 
