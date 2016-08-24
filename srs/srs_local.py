@@ -36,7 +36,14 @@ def get_closest_registered_category(scraped_category, registered_categories):
 	sorted_registeredCategory_matchedLayer_list = sorted(registeredCategory_matchedLayer_dict.items(),
 		key=lambda item: item[1], reverse=True)
 
-	return list(sorted_registeredCategory_matchedLayer_list[0][0])
+	best_matched_layer = sorted_registeredCategory_matchedLayer_list[0][1]
+
+	# if best matched category still not matching first two levels of scraped_category
+	# let user know srs is not ready for that
+	if best_matched_layer[0] < 1 or best_matched_layer[0] < 1:
+		return None
+	else:
+		return list(sorted_registeredCategory_matchedLayer_list[0][0])
 
 def get_reviews_num_and_registered_category(product_id):
 	"""
