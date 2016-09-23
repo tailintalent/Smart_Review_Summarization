@@ -1,23 +1,17 @@
 name: srs
 channels:
   - defaults
-#  - mlsg
+  - kehang
 dependencies:
   - configparser
   - numpy
   - lxml
   - nltk
   - scipy
-  - sklearn
   - matplotlib
   - flask
   - pandas
   - pymongo
-  - bokeh
-  - vaderSentiment
+  - bokeh ==0.11.1
   - requests
-  - python-amazon-simple-product-api
-  - bs4
-  - fake_useragent
-  - xmltodict
-  - word2vec
+

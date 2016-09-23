@@ -4,13 +4,16 @@ An automatic summarization tool for product reviews
 ## Dependencies management
 
 ### Anaconda environment creation
+If you never use anaconda before please install that before proceeding.
 ```
-conda env create
+cd Smart_Review_Summarization
+conda env create -f environment.yml
+source activate srs
 ```
 
-### `amazon_scraper` installation
+### other packages installation (those not available in `conda` channels)
 ```
-pip install amazon_scraper
+pip install -r requirements.txt
 ```
 
 ### `nltk_data/tokenizers` and `nltk_data/corpora`
@@ -21,16 +24,13 @@ nltk.download()
 choose `punkt` for tokenizer, `sentiwordnet` and `wordnet` for corpora.
 
 ### `MongoDB` configuration
-To enable fast query and update with product_id, enter
-```
-db.product_collection.createIndex({"product_id":1})
-```
-in MongoDB shell, to index the "product_id" field. 
+Please email us if you want to setup database for this project.
 
 ## Installation
 Append package directory `/path/to/Smart_Review_Summarization` into PYTHONPATH
 
-## Run
+## Run to launch `srs` web app
 ```
-source activate srs
+cd srs_web
+sudo python srs_web.py
 ```

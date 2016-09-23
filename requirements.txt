@@ -1,0 +1,7 @@
+sklearn
+vaderSentiment
+python-amazon-simple-product-api
+bs4
+fake_useragent
+xmltodict
+word2vec
