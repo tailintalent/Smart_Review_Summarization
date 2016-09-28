@@ -106,6 +106,8 @@ def update_contents_for_product_id(product_id, contents_new, review_ids_new, rat
 	review_ids = query_res[0]["review_ids"] + review_ids_new
 	ratings = query_res[0]["ratings"] + ratings_new
 	scraped_pages = query_res[0]["scraped_pages"]
+	if not isinstance(scraped_pages, list):
+		scraped_pages = [int(scraped_pages)]
 
 	category = query_res[0]["category"]
 	if category_new and not category:
